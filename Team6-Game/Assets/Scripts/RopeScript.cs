@@ -15,7 +15,7 @@ public class RopeScript : MonoBehaviour
         Vector2 player1Position = player1.transform.position;
         Vector2 player2Position = player2.transform.position;
         transform.position = (player1Position + player2Position)/2;
-        float ropeLength = Vector2.Distance(player1Position,player2Position);
+        float ropeLength = Vector2.Distance(player1Position,player2Position) / 5; // Set the number of rope segments
         float jointXOffset = (player2Position.x-player1Position.x)/ropeLength;
         float jointYOffset = (player2Position.y-player1Position.y)/ropeLength;
         for (float i = 0; i < ropeLength; i+=1) {
