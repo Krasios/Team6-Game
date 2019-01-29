@@ -7,19 +7,19 @@ public class RopeScript : MonoBehaviour
 {
     public GameObject player1;
     public GameObject player2;
-    public GameObject ropePrefab;
+    public GameObject ropePrefab; // Change to lightBondPrefab
 
     private List<GameObject> joints = new List<GameObject>();
     private float playerRadius = 6f;
-    private float ropeSegmentSize = 2.896f;
+    private float ropeSegmentSize = 2.896f; // Set the scale
 
     void Start() {
         Vector2 player1Position = player1.transform.position;
         Vector2 player2Position = player2.transform.position;
-        float ropeLength = Vector2.Distance(player1Position,player2Position)/ ropeSegmentSize; // Set the number of rope segments
-        float jointXOffset = (player2Position.x-player1Position.x)/ropeLength;
-        float jointYOffset = (player2Position.y-player1Position.y)/ropeLength;
-        for (float i = 0; i < ropeLength-playerRadius; i+=1) {
+        float ropeLength = Vector2.Distance(player1Position,player2Position) / ropeSegmentSize; // Set the number of rope segments
+        float jointXOffset = (player2Position.x - player1Position.x) / ropeLength;
+        float jointYOffset = (player2Position.y - player1Position.y) / ropeLength;
+        for (float i = 0; i < ropeLength - playerRadius; i+=1) {
             Vector3 position = new Vector2(player1Position.x + playerRadius + jointXOffset * i, player1Position.y + jointYOffset * i);
             GameObject ropeJoint = Instantiate(ropePrefab, position, Quaternion.identity);
             if (i == 0) {
@@ -40,6 +40,7 @@ public class RopeScript : MonoBehaviour
     }
 
     void FixedUpdate() {
+        // Update the rotation and position of the rope
         for (int i = 0; i < joints.Count; i+=1) {
             GameObject prev;
             GameObject next;
