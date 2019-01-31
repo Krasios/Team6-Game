@@ -76,7 +76,8 @@ public class PlayerCtrl : MonoBehaviour
         if (other.gameObject.CompareTag("PickUp"))
         {
             other.gameObject.SetActive(false); // Remove light from game
-            lightCount += 30;
+            pureLightCtrl collideLight = other.gameObject.GetComponent<pureLightCtrl>(); // get a reference to the light u collide with
+            lightCount += collideLight.currentValue; // Add the pure light's current value
             updateLightText();
         }
     }
