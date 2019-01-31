@@ -22,25 +22,29 @@ public class RopeScript : MonoBehaviour
         for (float i = 0; i < ropeLength - playerRadius; i+=1) {
             Vector3 position = new Vector2(player1Position.x + playerRadius + jointXOffset * i, player1Position.y + jointYOffset * i);
             GameObject ropeJoint = Instantiate(ropePrefab, position, Quaternion.identity);
+            // Bind the first segment to the 1st player
             if (i == 0) {
                 ropeJoint.GetComponent<DistanceJoint2D>().connectedBody = player1.GetComponent<Rigidbody2D>();
                 ropeJoint.GetComponent<DistanceJoint2D>().distance = playerRadius;
-            }else {
+            }
+            else { // Add joints to the rope
                 ropeJoint.GetComponent<DistanceJoint2D>().connectedBody = joints[(int)i-1].GetComponent<Rigidbody2D>();
             }
+            // Bind the last segment to the 2nd player
             if (i+1 >= ropeLength-playerRadius) {
                 DistanceJoint2D dj2d = ropeJoint.AddComponent<DistanceJoint2D>();
                 dj2d.connectedBody = player2.GetComponent<Rigidbody2D>();
                 dj2d.autoConfigureDistance = false;
                 dj2d.distance = playerRadius;
             }
+            // Add the current joint into the list
             joints.Add(ropeJoint);
         }
 
     }
 
     void FixedUpdate() {
-        // Update the rotation and position of the rope
+        // Update the rotation
         for (int i = 0; i < joints.Count; i+=1) {
             GameObject prev;
             GameObject next;
