@@ -37,42 +37,22 @@ public class PlayerCtrl : MonoBehaviour
             UpdatePlayerRot();
         }
 
+        // Decelerate the ship when left stick has no movement
+        if (( Mathf.Abs(moveHorizontal) <= 0.05  && Mathf.Abs(moveHorizontal) >= 0)
+            && (Mathf.Abs(moveVertical) <= 0.05 && Mathf.Abs(moveVertical) >= 0))
+        {
+            rigidB.AddForce(-rigidB.velocity * 0.2f); // slow down the ship
+        }
 
         // Add force to the player
         rigidB.AddForce(new Vector2(moveHorizontal, moveVertical) * speed);
 
         // Check to see if the player is moving too fast
-        float maxVelX = 50.0f;
-        float maxVelY = 50.0f;
-        // Check x max velocity
-        if (Mathf.Abs(rigidB.velocity.x) > maxVelX)
+        float maxVel = 50.0f;
+        // Cap the max velocity
+        if (Mathf.Abs(rigidB.velocity.magnitude) > maxVel)
         {
-            // Cap the velocity
-            if (rigidB.velocity.x < 0)
-            {
-                //negative
-                rigidB.velocity = new Vector2(-maxVelX, rigidB.velocity.y);
-            }
-            else
-            {
-                //positive
-                rigidB.velocity = new Vector2(maxVelX, rigidB.velocity.y);
-            }
-        }
-        // Check y max velocity
-        if (Mathf.Abs(rigidB.velocity.y) > maxVelY)
-        {
-            // Cap the velocity
-            if (rigidB.velocity.y < 0)
-            {
-                //negative
-                rigidB.velocity = new Vector2(rigidB.velocity.x, -maxVelY);
-            }
-            else
-            {
-                //positive
-                rigidB.velocity = new Vector2(rigidB.velocity.x, maxVelY);
-            }
+            rigidB.AddForce(-rigidB.velocity * 1.0f); // Cancel out any new velocity
         }
 
         if (playerLight.range > 5){
