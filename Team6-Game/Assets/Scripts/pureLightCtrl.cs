@@ -12,8 +12,10 @@ public class pureLightCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Generate a pure light value 
         currentValue = Random.Range(minValue, maxValue);
         float curScale = maxSize * (Mathf.Round(currentValue) / Mathf.Round(maxValue)); // if you do int division this wont work, use round to get floats
+        // Set the scale of the light relative to the 
         transform.localScale = new Vector3(curScale, curScale, curScale);
 
     }

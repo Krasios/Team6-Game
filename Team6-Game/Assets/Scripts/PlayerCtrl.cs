@@ -25,7 +25,7 @@ public class PlayerCtrl : MonoBehaviour
         shipLightParticles = GetComponent<ParticleSystem>();
         // playerLight = GetComponent<Light>();
 
-        // Set initial light properties
+        // Set initial light properties --Connor--
         lightCount = 100; // Start with 10 units of light
         lightText.text = "Light: " + lightCount;
         shootCost = 2; // Shooting costs 2 light units
