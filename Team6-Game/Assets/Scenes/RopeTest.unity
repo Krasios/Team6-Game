@@ -303,6 +303,9 @@ MonoBehaviour:
   partner: {fileID: 307541331}
   shieldPrefab: {fileID: 5347412684208592630, guid: 2c7f3c729338c77488c7a4218e8325fc,
     type: 3}
+  damageShield: {fileID: 0}
+  shieldHit: {fileID: 0}
+  shieldRegen: {fileID: 0}
 --- !u!1 &307541331
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,6 +321,7 @@ GameObject:
   - component: {fileID: 307541336}
   - component: {fileID: 307541337}
   - component: {fileID: 307541338}
+  - component: {fileID: 307541339}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Untagged
@@ -494,6 +498,17 @@ MonoBehaviour:
   partner: {fileID: 213510688}
   shieldPrefab: {fileID: 5347412684208592630, guid: 2c7f3c729338c77488c7a4218e8325fc,
     type: 3}
+  damageShield: {fileID: 21300000, guid: 38d98093be4de4f49ab44561c4385758, type: 3}
+  shieldHit: {fileID: 8300000, guid: 2365951736c38be4ca9e4e1ad37fa6df, type: 3}
+  shieldRegen: {fileID: 8300000, guid: e7e38564f4a7ace409df58f7dae843cd, type: 3}
+--- !u!81 &307541339
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307541331}
+  m_Enabled: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,7 +519,6 @@ GameObject:
   m_Component:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
-  - component: {fileID: 519420029}
   - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
@@ -513,14 +527,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &519420029
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
 --- !u!114 &519420030
 MonoBehaviour:
   m_ObjectHideFlags: 0

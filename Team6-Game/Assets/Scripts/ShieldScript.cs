@@ -8,6 +8,8 @@ public class ShieldScript : MonoBehaviour
     public GameObject partner;
     public GameObject shieldPrefab;
     public Sprite damageShield;
+    public AudioClip shieldHit;
+    public AudioClip shieldRegen;
 
     private Sprite okShield;
     private GameObject shield;
@@ -47,6 +49,7 @@ public class ShieldScript : MonoBehaviour
         if (!shieldActive) {
             timeRegen += Time.deltaTime;
             if (timeRegen >= distance) {
+                shield.GetComponent<AudioSource>().PlayOneShot(shieldRegen, 0.7F);
                 shieldActive = true;
                 timeRegen = 0;
                 //AOE on shield regeneration
@@ -64,6 +67,7 @@ public class ShieldScript : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other) {
         if (shieldActive && other.gameObject.CompareTag("Enemy")) {
             other.gameObject.SetActive(false);
+            shield.GetComponent<AudioSource>().PlayOneShot(shieldHit, 0.2F);
             hitsTaken += 1;
             isHit = true;
             currentAnimated = 0f;
