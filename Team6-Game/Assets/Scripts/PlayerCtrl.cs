@@ -117,19 +117,19 @@ public class PlayerCtrl : MonoBehaviour
 
     //-- Connor --//
     // Change the light text after updating the lightCount
-    void updateLightText()
+    public void updateLightText()
     {
         lightText.text = "Light: " + lightCount;
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.CompareTag("PickUp"))
-        {
-            print("Hit Light\n");
-            other.gameObject.SetActive(false); // Remove light from game
-            pureLightCtrl collideLight = other.gameObject.GetComponent<pureLightCtrl>(); // get a reference to the light u collide with
-            lightCount += collideLight.currentValue; // Add the pure light's current value
-            updateLightText();
-        }
-    }
+    //void OnTriggerEnter2D(Collider2D other) {
+    //    if (other.gameObject.CompareTag("PickUp"))
+    //    {
+    //        print("Hit Light\n");
+    //        other.gameObject.SetActive(false); // Remove light from game
+    //        pureLightCtrl collideLight = other.gameObject.GetComponent<pureLightCtrl>(); // get a reference to the light u collide with
+    //        lightCount += collideLight.currentValue; // Add the pure light's current value
+    //        updateLightText();
+    //    }
+    //}
 }
