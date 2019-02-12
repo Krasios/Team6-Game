@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2825867070171518727}
   - component: {fileID: 2825867070171518724}
   - component: {fileID: 4375185018451006458}
+  - component: {fileID: 9003802344762964050}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -97,7 +98,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 10
+  m_Mass: 0.2
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -4827,3 +4828,22 @@ MonoBehaviour:
   damageShield: {fileID: 21300000, guid: 38d98093be4de4f49ab44561c4385758, type: 3}
   shieldHit: {fileID: 8300000, guid: 2365951736c38be4ca9e4e1ad37fa6df, type: 3}
   shieldRegen: {fileID: 8300000, guid: e7e38564f4a7ace409df58f7dae843cd, type: 3}
+--- !u!232 &9003802344762964050
+DistanceJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2825867070171518733}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 0
+  m_Distance: 150
+  m_MaxDistanceOnly: 1
