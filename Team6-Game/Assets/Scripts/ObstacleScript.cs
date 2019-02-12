@@ -7,11 +7,11 @@ public class ObstacleScript : MonoBehaviour
     // Start is called before the first frame update
     public int obstaclePoolSize = 25;
     public GameObject obstaclePrefab;
-    public float spawnRate = 1f;
+    public float spawnRate = 0.5f;
     public GameObject player;
 
     private GameObject[] obstacles;
-    private Vector2 objectPoolPosition = new Vector2(-100f,-100f);
+    private Vector2 objectPoolPosition = new Vector2(-400f,-200f);
     private float timeSinceLastSpawned;
     private int currentObstacle = 0;
     private float obstacleDist = 50f;

@@ -10,7 +10,7 @@ public class pureLightCtrl : MonoBehaviour
     float maxSize = 7.0f;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // Generate a pure light value 
         currentValue = Random.Range(minValue, maxValue);

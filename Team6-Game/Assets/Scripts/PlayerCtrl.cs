@@ -125,6 +125,7 @@ public class PlayerCtrl : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("PickUp"))
         {
+            print("Hit Light\n");
             other.gameObject.SetActive(false); // Remove light from game
             pureLightCtrl collideLight = other.gameObject.GetComponent<pureLightCtrl>(); // get a reference to the light u collide with
             lightCount += collideLight.currentValue; // Add the pure light's current value
