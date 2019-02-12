@@ -5,78 +5,80 @@ using UnityEngine.UI;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    public float speed = 3.5f; // Increase player movement speed
+    public float speed;
     public string name;
     public GameObject bulletPrefab;
 
-    private Light playerLight;
+    //public Light playerLight;
     private Rigidbody2D rigidB;
 
+    // Light Variables -- Connor --
+    public int lightCount;
+    public Text lightText;
+    public int shootCost;
+    private ParticleSystem shipLightParticles;
+    float maxParticleSpawnRate = 50; // Maximum spawn rate of particles
 
-    float xRot;
-    float yRot;
 
     void Start() {
         rigidB = GetComponent<Rigidbody2D>();
-        playerLight = GetComponent<Light>();
+        shipLightParticles = GetComponent<ParticleSystem>();
+        // playerLight = GetComponent<Light>();
+
+        // Set initial light properties --Connor--
+        lightCount = 100; // Start with 10 units of light
+        lightText.text = "Light: " + lightCount;
+        shootCost = 2; // Shooting costs 2 light units
     }
 
     void FixedUpdate() {
-        //-- Code by Trevor and Connor --//
-        // Get inputs from xbox controller
-        float moveHorizontal = Input.GetAxis("Joystick-Horizontal-p1"); // Gamepad 1
-        float moveVertical = Input.GetAxis("Joystick-Vertical-p1"); // Gamepad 1
+        float moveHorizontal = Input.GetAxis("Joystick-Horizontal-" + name);
+        float moveVertical = Input.GetAxis("Joystick-Vertical-" + name);
 
-        // Get the rotation from the right stick
-        xRot = Input.GetAxis("stickXrotion-p1");
-        yRot = Input.GetAxis("stickYrotion-p1");
-
-        // Prevent snapping back to neutral position
-        if (Mathf.Abs(xRot) > 0.0 || Mathf.Abs(yRot) > 0.0 )
-        {
-            UpdatePlayerRot();
-        }
-
-        // Decelerate the ship when left stick has no movement
-        if (( Mathf.Abs(moveHorizontal) <= 0.05  && Mathf.Abs(moveHorizontal) >= 0)
-            && (Mathf.Abs(moveVertical) <= 0.05 && Mathf.Abs(moveVertical) >= 0))
-        {
-            rigidB.AddForce(-rigidB.velocity * 0.2f); // slow down the ship
-        }
-
-        // Add force to the player
-        rigidB.AddForce(new Vector2(moveHorizontal, moveVertical) * speed);
-
-        // Check to see if the player is moving too fast
-        float maxVel = 50.0f;
-        // Cap the max velocity
-        if (Mathf.Abs(rigidB.velocity.magnitude) > maxVel)
-        {
-            rigidB.AddForce(-rigidB.velocity * 1.0f); // Cancel out any new velocity
-        }
-
-        if (playerLight.range > 5){
-            playerLight.range -= 0.01f;
-        }
-        if (Input.GetButton("Jump")) {
+        rigidB.AddForce(new Vector2(moveHorizontal,moveVertical)*speed);
+        //if (playerLight.range > 5){
+        //    playerLight.range -= 0.01f;
+        //}
+        if (Input.GetButton("Jump") && (lightCount > 0)) { // If press space and have more than 0 light
             Instantiate(bulletPrefab, transform.position, transform.rotation);
+            lightCount -= shootCost; // Subtract the shoot cost from the light total
+            updateLightText(); // Update the UI's text
         }
+
+        //-- Connor --//
+        // Change the particle birth rate based on light
+        float spawnRate = lightCount / 2;
+        if (spawnRate > maxParticleSpawnRate)
+        {
+            spawnRate = maxParticleSpawnRate;
+        }
+        
+        var shipPartEmiss = shipLightParticles.emission; // need to make a ref b4 you can set the rate
+        shipPartEmiss.rateOverTime = spawnRate; // Set the particle spawn rate
+
+        // Rotate the ship
+        if (Input.GetButton("Fire2"))
+        {
+            int rotspd = 5;
+            transform.Rotate(Vector3.forward, rotspd);
+        }
+
     }
 
-    void UpdatePlayerRot()
+    //-- Connor --//
+    // Change the light text after updating the lightCount
+    void updateLightText()
     {
-        float rotSpeed = 15.0f; //  Determine how fast the ship rotates
-        //Use arc tan to get radians of in between angle then convert to degrees 
-        float playerDirection = Mathf.Atan2(xRot, yRot) * Mathf.Rad2Deg;
-
-        // Convert the degrees into a quaternion around the world's z axis
-        Quaternion quat = Quaternion.Euler(0.0f, 0.0f, playerDirection); 
-
-        // Update the rotation of the ship to match the angle of the right stick
-        transform.rotation = Quaternion.Slerp(transform.rotation, quat, Time.deltaTime * rotSpeed);
+        lightText.text = "Light: " + lightCount;
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-
+        if (other.gameObject.CompareTag("PickUp"))
+        {
+            other.gameObject.SetActive(false); // Remove light from game
+            pureLightCtrl collideLight = other.gameObject.GetComponent<pureLightCtrl>(); // get a reference to the light u collide with
+            lightCount += collideLight.currentValue; // Add the pure light's current value
+            updateLightText();
+        }
     }
 }
