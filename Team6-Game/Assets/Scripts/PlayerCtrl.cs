@@ -16,8 +16,15 @@ public class PlayerCtrl : MonoBehaviour
     public int lightCount;
     public Text lightText;
     public int shootCost;
+    public bool joystick;
     private ParticleSystem shipLightParticles;
     float maxParticleSpawnRate = 50; // Maximum spawn rate of particles
+ 
+
+    float xRot;
+    float yRot;
+    float moveHorizontal;
+    float moveVertical;
 
 
     void Start() {
@@ -32,13 +39,47 @@ public class PlayerCtrl : MonoBehaviour
     }
 
     void FixedUpdate() {
-        float moveHorizontal = Input.GetAxis("Joystick-Horizontal-" + name);
-        float moveVertical = Input.GetAxis("Joystick-Vertical-" + name);
+        if (joystick)
+        {
+            moveHorizontal = Input.GetAxis("Joystick-Horizontal-" + name);
+            moveVertical = Input.GetAxis("Joystick-Vertical-" + name);
+            xRot = Input.GetAxis("stickXrotion-" + name);
+            yRot = Input.GetAxis("stickYrotion-" + name);
+        } else
+        {
+            moveHorizontal = Input.GetAxis("Keyboard-Horizontal-" + name);
+            moveVertical = Input.GetAxis("Keyboard-Vertical-" + name);
+            xRot = Input.GetAxis("keyboardXrotion-" + name);
+            yRot = Input.GetAxis("keyboardYrotion-" + name);
+        }
+        
 
-        rigidB.AddForce(new Vector2(moveHorizontal,moveVertical)*speed);
-        //if (playerLight.range > 5){
-        //    playerLight.range -= 0.01f;
-        //}
+        
+
+        // Prevent snapping back to neutral position
+        if (Mathf.Abs(xRot) > 0.0 || Mathf.Abs(yRot) > 0.0)
+        {
+            UpdatePlayerRot();
+        }
+
+        // Decelerate the ship when left stick has no movement
+        if ((Mathf.Abs(moveHorizontal) <= 0.05 && Mathf.Abs(moveHorizontal) >= 0)
+            && (Mathf.Abs(moveVertical) <= 0.05 && Mathf.Abs(moveVertical) >= 0))
+        {
+            rigidB.AddForce(-rigidB.velocity * 0.2f); // slow down the ship
+        }
+
+        // Add force to the player
+        rigidB.AddForce(new Vector2(moveHorizontal, moveVertical) * speed);
+
+        // Check to see if the player is moving too fast
+        float maxVel = 50.0f;
+        // Cap the max velocity
+        if (Mathf.Abs(rigidB.velocity.magnitude) > maxVel)
+        {
+            rigidB.AddForce(-rigidB.velocity * 1.0f); // Cancel out any new velocity
+        }
+
         if (Input.GetButton("Jump") && (lightCount > 0)) { // If press space and have more than 0 light
             Instantiate(bulletPrefab, transform.position, transform.rotation);
             lightCount -= shootCost; // Subtract the shoot cost from the light total
@@ -56,13 +97,22 @@ public class PlayerCtrl : MonoBehaviour
         var shipPartEmiss = shipLightParticles.emission; // need to make a ref b4 you can set the rate
         shipPartEmiss.rateOverTime = spawnRate; // Set the particle spawn rate
 
-        // Rotate the ship
-        if (Input.GetButton("Fire2"))
-        {
-            int rotspd = 5;
-            transform.Rotate(Vector3.forward, rotspd);
-        }
+        
 
+    }
+
+    // Connor and Trevor
+    void UpdatePlayerRot()
+    {
+        float rotSpeed = 15.0f; //  Determine how fast the ship rotates
+        //Use arc tan to get radians of in between angle then convert to degrees 
+        float playerDirection = Mathf.Atan2(xRot, yRot) * Mathf.Rad2Deg;
+
+        // Convert the degrees into a quaternion around the world's z axis
+        Quaternion quat = Quaternion.Euler(0.0f, 0.0f, playerDirection);
+
+        // Update the rotation of the ship to match the angle of the right stick
+        transform.rotation = Quaternion.Slerp(transform.rotation, quat, Time.deltaTime * rotSpeed);
     }
 
     //-- Connor --//

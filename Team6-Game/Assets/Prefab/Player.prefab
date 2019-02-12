@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 2825867070171518725}
   - component: {fileID: 2825867070171518727}
   - component: {fileID: 2825867070171518724}
+  - component: {fileID: 4375185018451006458}
   m_Layer: 0
-  m_Name: Player1
-  m_TagString: Untagged
+  m_Name: Player
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70,8 +71,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1157477927
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b265647fe7c73dc4a82aa551e5c12cc9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -124,6 +125,7 @@ MonoBehaviour:
   lightCount: 0
   lightText: {fileID: 0}
   shootCost: 0
+  joystick: 0
 --- !u!198 &2825867070171518725
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4781,7 +4783,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -385090125
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -4806,3 +4808,22 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &4375185018451006458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2825867070171518733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6daa48b0de7aaa64d81ef5c77b1856e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2825867070171518733}
+  partner: {fileID: 0}
+  shieldPrefab: {fileID: 5347412684208592630, guid: 2c7f3c729338c77488c7a4218e8325fc,
+    type: 3}
+  damageShield: {fileID: 21300000, guid: 38d98093be4de4f49ab44561c4385758, type: 3}
+  shieldHit: {fileID: 8300000, guid: 2365951736c38be4ca9e4e1ad37fa6df, type: 3}
+  shieldRegen: {fileID: 8300000, guid: e7e38564f4a7ace409df58f7dae843cd, type: 3}
