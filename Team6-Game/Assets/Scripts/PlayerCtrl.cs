@@ -80,7 +80,7 @@ public class PlayerCtrl : MonoBehaviour
             rigidB.AddForce(-rigidB.velocity * 1.0f); // Cancel out any new velocity
         }
 
-        if (Input.GetButton("Jump") && (lightCount > 0)) { // If press space and have more than 0 light
+        if ((Input.GetButton("Jump") || Input.GetButton("Keyboard-Jump")) && (lightCount > 0)) { // If press space and have more than 0 light
             Instantiate(bulletPrefab, transform.position, transform.rotation);
             lightCount -= shootCost; // Subtract the shoot cost from the light total
             updateLightText(); // Update the UI's text
