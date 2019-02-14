@@ -118,7 +118,7 @@ InputManager:
     axis: 0
     joyNum: 2
   - serializedVersion: 3
-    m_Name: Joystick-Horizontal-p2
+    m_Name: Joystick-Vertical-p2
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
@@ -193,10 +193,26 @@ InputManager:
     dead: 0.15
     sensitivity: 0.5
     snap: 0
-    invert: 1
+    invert: 0
     type: 2
     axis: 3
     joyNum: 1
+  - serializedVersion: 3
+    m_Name: stickXrotion-p2
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.15
+    sensitivity: 0.5
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 3
+    joyNum: 2
   - serializedVersion: 3
     m_Name: keyboardXrotion-p1
     descriptiveName: 
@@ -225,10 +241,26 @@ InputManager:
     dead: 0.15
     sensitivity: 0.5
     snap: 0
-    invert: 1
+    invert: 0
     type: 2
     axis: 4
     joyNum: 1
+  - serializedVersion: 3
+    m_Name: stickYrotion-p2
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.15
+    sensitivity: 0.5
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 4
+    joyNum: 2
   - serializedVersion: 3
     m_Name: keyboardYrotion-p1
     descriptiveName: 
