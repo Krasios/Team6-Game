@@ -80,7 +80,7 @@ public class PlayerCtrl : MonoBehaviour
             rigidB.AddForce(-rigidB.velocity * 1.0f); // Cancel out any new velocity
         }
 
-        if ((Input.GetButton("Jump") || Input.GetButton("Keyboard-Jump")) && (lightCount > 0)) { // If press space and have more than 0 light
+        if ((Input.GetButton("Jump") || Input.GetButton("Fire-"+name)) && (lightCount > 0)) { // If press space and have more than 0 light
             Instantiate(bulletPrefab, transform.position, transform.rotation);
             lightCount -= shootCost; // Subtract the shoot cost from the light total
             updateLightText(); // Update the UI's text
@@ -122,14 +122,13 @@ public class PlayerCtrl : MonoBehaviour
         lightText.text = "Light: " + lightCount;
     }
 
-    //void OnTriggerEnter2D(Collider2D other) {
-    //    if (other.gameObject.CompareTag("PickUp"))
-    //    {
-    //        print("Hit Light\n");
-    //        other.gameObject.SetActive(false); // Remove light from game
-    //        pureLightCtrl collideLight = other.gameObject.GetComponent<pureLightCtrl>(); // get a reference to the light u collide with
-    //        lightCount += collideLight.currentValue; // Add the pure light's current value
-    //        updateLightText();
-    //    }
-    //}
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            // If the player hits an enemy lose light
+            lightCount -= 10;
+            updateLightText();
+        }
+    }
 }

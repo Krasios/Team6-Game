@@ -125,7 +125,7 @@ MonoBehaviour:
     type: 3}
   lightCount: 0
   lightText: {fileID: 0}
-  shootCost: 0
+  shootCost: 5
   joystick: 0
 --- !u!198 &2825867070171518725
 ParticleSystem:
