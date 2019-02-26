@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2789503162532810814}
   - component: {fileID: 1503044301555475536}
   - component: {fileID: 4554243108101084418}
+  - component: {fileID: 659367737340870069}
   - component: {fileID: 6321159193715992327}
   m_Layer: 0
   m_Name: Obstacle
@@ -97,6 +98,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &659367737340870069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245643369336124364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eccc2b01bdc78534eab343149680c6dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  s: 30
+  player: {fileID: 2825867070171518733, guid: 2063f7e3786e9914680e7b4f0b6abc6f, type: 3}
 --- !u!50 &6321159193715992327
 Rigidbody2D:
   serializedVersion: 4
@@ -109,7 +124,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1000
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0

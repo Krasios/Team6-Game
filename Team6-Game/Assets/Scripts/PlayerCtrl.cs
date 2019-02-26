@@ -26,6 +26,26 @@ public class PlayerCtrl : MonoBehaviour
     float moveHorizontal;
     float moveVertical;
 
+    // Bullet var - Duy
+    public float fireRate;
+    public float chargeRate;
+    public float laserRate;
+    public float laserLength;
+    public int SprayNum; // num of initial sprays
+    public float SprayRate; //time it takes spray
+    public float SprayAngle; //10 default?
+    public bool enableSpray;
+
+    private bool isFirstShot;
+    private bool isCharging;
+    private bool isLaser;
+    private float laserTimer;
+    private float nextFire;
+    private float nextCharge;
+    private float spread;
+
+    private AudioSource bulletsound;
+
 
     void Start() {
         rigidB = GetComponent<Rigidbody2D>();
@@ -36,6 +56,12 @@ public class PlayerCtrl : MonoBehaviour
         lightCount = 100; // Start with 10 units of light
         lightText.text = "Light: " + lightCount;
         shootCost = 2; // Shooting costs 2 light units
+        bulletsound = GetComponent<AudioSource>();
+        nextCharge = 0;
+        nextFire = fireRate;
+        isCharging = false;
+        isLaser = false;
+        laserTimer = 0;
     }
 
     void FixedUpdate() {
@@ -49,12 +75,14 @@ public class PlayerCtrl : MonoBehaviour
         {
             moveHorizontal = Input.GetAxis("Keyboard-Horizontal-" + name);
             moveVertical = Input.GetAxis("Keyboard-Vertical-" + name);
-            xRot = Input.GetAxis("keyboardXrotion-" + name);
-            yRot = Input.GetAxis("keyboardYrotion-" + name);
+            //orientation determined by movement
+            xRot = Input.GetAxis(/*"keyboardXrotion-"*/"Keyboard-Horizontal-" + name);
+            yRot = Input.GetAxis(/*"keyboardYrotion-"*/"Keyboard-Vertical-" + name);
+            yRot = -yRot;
         }
-        
 
-        
+
+
 
         // Prevent snapping back to neutral position
         if (Mathf.Abs(xRot) > 0.0 || Mathf.Abs(yRot) > 0.0)
@@ -79,16 +107,96 @@ public class PlayerCtrl : MonoBehaviour
         {
             rigidB.AddForce(-rigidB.velocity * 1.0f); // Cancel out any new velocity
         }
+        //possible gun design: hold individually to shoot shotgun that costs only 1 bullet
+        //before it shoots as a continuous spray, draining many bullets
 
-        if ((Input.GetButton("Jump") || Input.GetButton("Fire-"+name)) && (lightCount > 0)) { // If press space and have more than 0 light
+        //current gun design: longest charge for bullet stream. Second longest for shotgun.
+        //Third for triple. Tap to fire. Set rate to 0 to disable.
+/*        if ((Input.GetButton("Jump-"+name) || Input.GetButton("Fire-"+name)) && (lightCount > 0)) { // If press space and have more than 0 light
             Instantiate(bulletPrefab, transform.position, transform.rotation);
             lightCount -= shootCost; // Subtract the shoot cost from the light total
             updateLightText(); // Update the UI's text
+        }*/
+
+        nextFire += Time.deltaTime;
+        Vector3 spawn = transform.position - transform.up * 5; //spawn bullet at tip of gun
+
+        if (laserTimer < laserLength && isLaser == true)
+        {
+            isCharging = false;
+            laserTimer += Time.deltaTime;
+            if (enableSpray == true)
+            {
+                spread = Random.Range(-SprayAngle, SprayAngle);
+                GameObject bullet = Instantiate(bulletPrefab, spawn, transform.rotation);
+                bullet.GetComponent<Rigidbody2D>().rotation += spread;
+                bulletsound.Play();
+            }
+            else
+            {
+                Instantiate(bulletPrefab, spawn, transform.rotation);
+                bulletsound.Play();
+            }
+        }
+        else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name))
+            /*&& (lightCount > 0)*/  && isLaser == false)
+        // If press space and have more than 0 light
+        {
+            isLaser = false;
+            if (nextFire > fireRate && isCharging == false)
+            {
+                Instantiate(bulletPrefab, spawn, transform.rotation);
+                bulletsound.Play();
+                nextFire = 0;
+                lightCount -= shootCost; // Subtract the shoot cost from the light total
+                updateLightText(); // Update the UI's text
+            }
+            nextCharge += Time.deltaTime;
+            isCharging = true;
+        }
+        else
+        {
+            isLaser = false;
+            isCharging = false;
+            if (nextCharge > laserRate && laserRate !=0/*4 * chargeRate*/)
+            {
+                laserTimer = 0;
+                isLaser = true;
+                nextCharge = 0;
+            }
+            else if (nextCharge > SprayRate && SprayRate != 0) //charge shot: 3x bullets or a charged bullet prefab
+            {
+                //Instantiate(bulletPrefab, spawn + transform.right * 2, transform.rotation);
+                //Instantiate(bulletPrefab, spawn - transform.right * 2, transform.rotation);
+                //Instantiate(bulletPrefab, spawn, transform.rotation);
+                for (int i = 0; i < SprayNum; i++)
+                {
+                    spread = Random.Range(-SprayAngle, SprayAngle);
+                    GameObject bullet = Instantiate(bulletPrefab, spawn, transform.rotation);
+                    bullet.GetComponent<Rigidbody2D>().rotation += spread;
+                    //Instantiate(bulletPrefab, spawn, transform.rotation * Quaternion.AngleAxis(spread, transform.up));
+                    //Instantiate(bulletPrefab, spawn, transform.rotation * Quaternion.Euler(spread, transform.up));
+                }
+                bulletsound.Play();
+                lightCount -= shootCost; // Subtract the shoot cost from the light total
+                updateLightText(); // Update the UI's text
+                nextCharge = 0;
+            }
+            else if (nextCharge > chargeRate && chargeRate != 0)
+            {
+                Instantiate(bulletPrefab, spawn + transform.right * 2, transform.rotation);
+                Instantiate(bulletPrefab, spawn - transform.right * 2, transform.rotation);
+                Instantiate(bulletPrefab, spawn, transform.rotation);
+                bulletsound.Play();
+                lightCount -= shootCost; // Subtract the shoot cost from the light total
+                updateLightText(); // Update the UI's text
+                nextCharge = 0;
+            }
         }
 
-        //-- Connor --//
-        // Change the particle birth rate based on light
-        float spawnRate = lightCount / 2;
+    //-- Connor --//
+    // Change the particle birth rate based on light
+    float spawnRate = lightCount / 2;
         if (spawnRate > maxParticleSpawnRate)
         {
             spawnRate = maxParticleSpawnRate;
