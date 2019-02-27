@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class tutorialLight : MonoBehaviour
 {
-    int minValue = 30;
+    int minValue = 10;
     int maxValue = 100;
     public int currentValue;
     float maxSize = 7.0f;

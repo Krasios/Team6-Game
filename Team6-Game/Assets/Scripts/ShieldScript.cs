@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ShieldScript : MonoBehaviour
 {
     public GameObject player;
-    public GameObject partner;
     public GameObject shieldPrefab;
     public Sprite damageShield;
     public AudioClip shieldHit;
@@ -17,12 +17,13 @@ public class ShieldScript : MonoBehaviour
     private float maxShieldRadius = 15;
     private float shieldAnimated = 0.5f;
     private float currentAnimated = 0f;
-    private float distance = 0;
-    private int maxHits = 10;
-    private int hitsTaken = 0;
+    private float maxHits = 10;
+    private float hitsTaken = 0;
     private bool shieldActive;
     private bool isHit = false;
     private float timeRegen;
+    private float timeToRegen = 10;
+    private float shieldRadius;
 
     void Start() {
         shield = Instantiate(shieldPrefab, player.transform.position, Quaternion.identity);        
@@ -30,25 +31,26 @@ public class ShieldScript : MonoBehaviour
         shield.transform.position = player.transform.position;
         shieldActive = true;
         shield.GetComponent<CircleCollider2D>().isTrigger = true;
-        distance = Vector2.Distance(player.transform.position,partner.transform.position);
         okShield = shield.GetComponent<SpriteRenderer>().sprite;
     }
 
     void Update() {
-        distance = Vector2.Distance(player.transform.position,partner.transform.position);
-        float shieldRadius = (distance > 20) ? (maxShieldDistance/distance) : maxShieldRadius;
-        shield.GetComponent<CircleCollider2D>().radius = shieldRadius*2.5f/(shield.transform.localScale.x);
-        shield.transform.localScale = Vector3.one * shieldRadius;
+        if(shieldActive){
+            maxHits = (int)Math.Log(player.GetComponent<PlayerCtrl>().lightCount);
+            shieldRadius = maxHits-hitsTaken;
+            shield.GetComponent<CircleCollider2D>().radius = shieldRadius*2.5f/(shield.transform.localScale.x + 1);
+            shield.transform.localScale = Vector3.one * shieldRadius;
+        }
         if (isHit) {
             currentAnimated += Time.deltaTime;
-            if (currentAnimated >= shieldAnimated) {
+            if (currentAnimated >= 5) {
                 isHit = false;
                 shield.GetComponent<SpriteRenderer>().sprite = okShield;
             }
         }
         if (!shieldActive) {
             timeRegen += Time.deltaTime;
-            if (timeRegen >= distance) {
+            if (timeRegen >= timeToRegen && player.GetComponent<PlayerCtrl>().lightCount > 0) {
                 shield.GetComponent<AudioSource>().PlayOneShot(shieldRegen, 0.7F);
                 shieldActive = true;
                 timeRegen = 0;
@@ -59,23 +61,27 @@ public class ShieldScript : MonoBehaviour
                         enemies[i].SetActive(false);
                     }
                 }
-                shield.GetComponent<SpriteRenderer>().enabled = true;               
+                shield.GetComponent<SpriteRenderer>().enabled = true;     
+                shield.GetComponent<CircleCollider2D>().enabled = true;         
             }
         }
     }
 
     void OnTriggerEnter2D(Collider2D other) {
         if (shieldActive && other.gameObject.CompareTag("Enemy")) {
+            tutorialCtrl.instance.asteroidZapped();
             other.gameObject.SetActive(false);
             shield.GetComponent<AudioSource>().PlayOneShot(shieldHit, 0.2F);
             hitsTaken += 1;
             isHit = true;
             currentAnimated = 0f;
+            player.GetComponent<PlayerCtrl>().lightCount += 10;
             shield.GetComponent<SpriteRenderer>().sprite = damageShield;
             if (hitsTaken > maxHits) {
                 shieldActive = false;
                 hitsTaken = 0;
                 shield.GetComponent<SpriteRenderer>().enabled = false;
+                shield.GetComponent<CircleCollider2D>().enabled = false;
             }
         }
     }
