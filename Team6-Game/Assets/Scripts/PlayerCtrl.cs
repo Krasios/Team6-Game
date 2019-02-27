@@ -115,7 +115,7 @@ public class PlayerCtrl : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, quat, Time.deltaTime * rotSpeed);
     }
 
-    //-- Connor --//
+    //-- Connor --// //Edited negative light check - Trevor //
     // Change the light text after updating the lightCount
     public void updateLightText()
     {
@@ -124,10 +124,15 @@ public class PlayerCtrl : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy") && lightCount > 0)
         {
             // If the player hits an enemy lose light
             lightCount -= 10;
+            // If light is now negative, set to 0 instead 
+            if (lightCount < 0)
+            {
+                lightCount = 0;
+            }
             updateLightText();
         }
     }
