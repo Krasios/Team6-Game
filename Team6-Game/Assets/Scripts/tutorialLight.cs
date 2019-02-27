@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class tutorialLight : MonoBehaviour
 {
-    int minValue = 50;
+    int minValue = 30;
     int maxValue = 100;
     public int currentValue;
     float maxSize = 7.0f;
@@ -25,6 +25,7 @@ public class tutorialLight : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            other.gameObject.GetComponent<PlayerCtrl>().lightCount += currentValue;
             this.gameObject.SetActive(false); // Remove light from game
             tutorialCtrl.instance.lightGathered();
         }
