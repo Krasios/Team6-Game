@@ -222,31 +222,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Instruction
       objectReference: {fileID: 0}
-    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
-        type: 3}
-      propertyPath: m_FontData.m_Alignment
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
-        type: 3}
-      propertyPath: m_Text
-      value: Gather 10 light sources
-      objectReference: {fileID: 0}
-    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
-        type: 3}
-      propertyPath: m_FontData.m_VerticalOverflow
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
-        type: 3}
-      propertyPath: m_FontData.m_HorizontalOverflow
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
-        type: 3}
-      propertyPath: m_FontData.m_BestFit
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3609418344982661800, guid: 6201ad0533cc7a441875a67c1e86fefa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -352,6 +327,31 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
+        type: 3}
+      propertyPath: m_Text
+      value: Gather 10 light sources
+      objectReference: {fileID: 0}
+    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
+        type: 3}
+      propertyPath: m_FontData.m_VerticalOverflow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
+        type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
+        type: 3}
+      propertyPath: m_FontData.m_BestFit
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6201ad0533cc7a441875a67c1e86fefa, type: 3}
 --- !u!1001 &349352147
@@ -434,7 +434,7 @@ PrefabInstance:
     - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
         type: 3}
       propertyPath: joystick
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
         type: 3}
@@ -666,11 +666,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
-        type: 3}
-      propertyPath: m_FontData.m_Alignment
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 3609418344982661800, guid: 6201ad0533cc7a441875a67c1e86fefa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -775,6 +770,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3609418344982661814, guid: 6201ad0533cc7a441875a67c1e86fefa,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6201ad0533cc7a441875a67c1e86fefa, type: 3}
