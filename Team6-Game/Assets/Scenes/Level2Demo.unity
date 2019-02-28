@@ -679,10 +679,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8703d9a01ddb82440a44d5877895202f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstaclePoolSize: 20
+  obstaclePoolSize: 40
   obstaclePrefab: {fileID: 9139141795499966603, guid: b496644f187043b45ab28daa20e882b9,
     type: 3}
-  spawnRate: 0.2
+  spawnRate: 0.5
   player: {fileID: 42934839}
 --- !u!4 &777862971
 Transform:
