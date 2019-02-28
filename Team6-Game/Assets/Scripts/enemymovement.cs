@@ -72,5 +72,15 @@ public class enemymovement : MonoBehaviour
         {
             rb2d.AddForce(new Vector2(0, Random.Range(2.5f * s, 10 * s)));
         }
+
+        
+    }
+
+    void LateUpdate()
+    {
+        // Connor, Set the rotation of the sprite so it always faces the player
+        Vector3 relPos = player.transform.position - transform.position;
+        float lookAtAngle = Mathf.Atan2(relPos.y, relPos.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, lookAtAngle));
     }
 }
