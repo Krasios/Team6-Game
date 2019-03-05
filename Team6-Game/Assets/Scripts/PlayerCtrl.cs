@@ -20,12 +20,17 @@ public class PlayerCtrl : MonoBehaviour
     private ParticleSystem shipLightParticles;
     float maxParticleSpawnRate = 50; // Maximum spawn rate of particles
  
-
     float xRot;
     float yRot;
     float moveHorizontal;
     float moveVertical;
 
+    // UI elements -- Trevor -- 
+    public Slider healthSlider;
+    public Slider lightSlider;
+    public float currentHealth = 100;
+    public float maxHealth = 100;
+    public float maxLight = 1000;
 
     void Start() {
         rigidB = GetComponent<Rigidbody2D>();
@@ -33,9 +38,19 @@ public class PlayerCtrl : MonoBehaviour
         // playerLight = GetComponent<Light>();
 
         // Set initial light properties --Connor--
-        lightCount = 100; // Start with 10 units of light
+        lightCount = 100; // Start with 100 units of light
         lightText.text = "Light: " + lightCount;
         shootCost = 2; // Shooting costs 2 light units
+
+        // Sets the health bar to full instantly at the start of the level
+        healthSlider.value =  1;
+    }
+
+    private void Update()
+    {
+        // Animates the light and health bars as they gain or lose value --Trevor--
+        healthSlider.value = Mathf.Lerp(healthSlider.value, currentHealth / maxHealth, 0.05f);
+        lightSlider.value = Mathf.Lerp(lightSlider.value, lightCount / maxLight, 0.05f);
     }
 
     void FixedUpdate() {
@@ -115,7 +130,7 @@ public class PlayerCtrl : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, quat, Time.deltaTime * rotSpeed);
     }
 
-    //-- Connor --// //Edited negative light check - Trevor //
+    //-- Connor --// // Edited negative light check --Trevor-- //
     // Change the light text after updating the lightCount
     public void updateLightText()
     {
@@ -134,6 +149,12 @@ public class PlayerCtrl : MonoBehaviour
                 lightCount = 0;
             }
             updateLightText();
+        }
+        // If the player is hit without shields up, reduce players health --Trevor--
+        if (other.gameObject.CompareTag("Enemy") && GetComponent<ShieldScript>().IsShieldActive() == false)
+        {
+            currentHealth -= 10;
+            Debug.Log("Player hit, health: " + currentHealth);
         }
     }
 }
