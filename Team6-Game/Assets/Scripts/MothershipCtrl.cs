@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MothershipCtrl : MonoBehaviour
 {
@@ -25,6 +26,12 @@ public class MothershipCtrl : MonoBehaviour
     {
         //animates the mothership light stored
         slider.value = Mathf.Lerp(slider.value, mothershipLight / mothershipGoal, 0.05f);
+
+        if (mothershipLight >= mothershipGoal)
+        {
+            // Load Level 2
+            SceneSwitch();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -39,5 +46,19 @@ public class MothershipCtrl : MonoBehaviour
                 other.gameObject.GetComponent<PlayerCtrl>().updateLightText();
             }
         }
+    }
+
+    void SceneSwitch()
+    {
+        // Connor Load the second level if on the first one
+        if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0 )
+        {
+            SceneManager.LoadScene("Level2Demo", LoadSceneMode.Single);
+        }
+        else if (string.Compare(SceneManager.GetActiveScene().name, "Level2Demo") == 0)
+        {
+            SceneManager.LoadScene("LevelVictory", LoadSceneMode.Single);
+        }
+
     }
 }

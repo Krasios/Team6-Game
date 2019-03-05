@@ -5,13 +5,14 @@ using UnityEngine;
 public class enemymovement : MonoBehaviour
 {
     public float s;             //Floating point variable to store the enemy's max speed limit.
-    public GameObject player;
+    private GameObject player;
     private Rigidbody2D rb2d;       //Store a reference to the Rigidbody2D component required to use 2D Physics.
     private Rigidbody2D prb;
 
     // Use this for initialization
     void Start()
     {
+        player = GameObject.Find("Player1"); //Connor, assign the player by name of game object
         //Get and store a reference to the Rigidbody2D component so that we can access it.
         rb2d = GetComponent<Rigidbody2D>();
         prb = player.GetComponent<Rigidbody2D>();
@@ -72,5 +73,14 @@ public class enemymovement : MonoBehaviour
         {
             rb2d.AddForce(new Vector2(0, Random.Range(2.5f * s, 10 * s)));
         }
+
+        
+    }
+
+    void LateUpdate()
+    {
+        // Connor, Set the rotation of the sprite so it always faces the player
+        Vector3 relPos = player.transform.position - transform.position; // Get the relative position from player to this object
+        transform.up = new Vector2(relPos.x, relPos.y); // Change the direction of up to be the relative position's x and y coordinates
     }
 }
