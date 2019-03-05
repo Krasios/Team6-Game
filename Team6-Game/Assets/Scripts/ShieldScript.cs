@@ -41,6 +41,7 @@ public class ShieldScript : MonoBehaviour
             shield.GetComponent<CircleCollider2D>().radius = shieldRadius*2.5f/(shield.transform.localScale.x + 1);
             shield.transform.localScale = Vector3.one * shieldRadius;
         }
+
         if (isHit) {
             currentAnimated += Time.deltaTime;
             if (currentAnimated >= 5) {
@@ -84,5 +85,12 @@ public class ShieldScript : MonoBehaviour
                 shield.GetComponent<CircleCollider2D>().enabled = false;
             }
         }
+    }
+
+    // ShieldActive status getter for calling from player ctrl --Trevor--
+    public bool IsShieldActive()
+    {
+        Debug.Log(shieldActive);
+        return shieldActive;
     }
 }
