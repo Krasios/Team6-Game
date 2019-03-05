@@ -32,6 +32,24 @@ public class PlayerCtrl : MonoBehaviour
     public float maxHealth = 100;
     public float maxLight = 1000;
 
+    // Bullet var - Duy
+    public float fireRate;
+    public float chargeRate;
+    public float laserRate;
+    public float laserLength;
+    public int SprayNum; // num of initial sprays
+    public float SprayRate; //time it takes spray
+    public float SprayAngle; //10 default?
+    public bool enableSpray;
+    private bool isFirstShot;
+    private bool isCharging;
+    private bool isLaser;
+    private float laserTimer;
+    private float nextFire;
+    private float nextCharge;
+    private float spread;
+    private AudioSource bulletsound;
+
     void Start() {
         rigidB = GetComponent<Rigidbody2D>();
         shipLightParticles = GetComponent<ParticleSystem>();
@@ -44,6 +62,14 @@ public class PlayerCtrl : MonoBehaviour
 
         // Sets the health bar to full instantly at the start of the level
         healthSlider.value =  1;
+
+        // Duy and Connor, Shooting Stuff 
+        bulletsound = GetComponent<AudioSource>();
+        nextCharge = 0;
+        nextFire = fireRate;
+        isCharging = false;
+        isLaser = false;
+        laserTimer = 0;
     }
 
     private void Update()
@@ -95,10 +121,85 @@ public class PlayerCtrl : MonoBehaviour
             rigidB.AddForce(-rigidB.velocity * 1.0f); // Cancel out any new velocity
         }
 
-        if ((Input.GetButton("Jump") || Input.GetButton("Fire-"+name)) && (lightCount > 0)) { // If press space and have more than 0 light
-            Instantiate(bulletPrefab, transform.position, transform.rotation);
-            lightCount -= shootCost; // Subtract the shoot cost from the light total
-            updateLightText(); // Update the UI's text
+        //if ((Input.GetButton("Jump") || Input.GetButton("Fire-"+name)) && (lightCount > 0)) { // If press space and have more than 0 light
+        //    Instantiate(bulletPrefab, transform.position, transform.rotation);
+        //    lightCount -= shootCost; // Subtract the shoot cost from the light total
+        //    updateLightText(); // Update the UI's text
+        //}
+        nextFire += Time.deltaTime;
+        Vector3 spawn = transform.position - transform.up * 5; //spawn bullet at tip of gun
+
+        if (laserTimer < laserLength && isLaser == true)
+        {
+            isCharging = false;
+            laserTimer += Time.deltaTime;
+            if (enableSpray == true)
+            {
+                spread = Random.Range(-SprayAngle, SprayAngle);
+                GameObject bullet = Instantiate(bulletPrefab, spawn, transform.rotation);
+                bullet.GetComponent<Rigidbody2D>().rotation += spread;
+                bulletsound.Play();
+            }
+            else
+            {
+                Instantiate(bulletPrefab, spawn, transform.rotation);
+                bulletsound.Play();
+            }
+        }
+        else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name))
+            /*&& (lightCount > 0)*/  && isLaser == false)
+        // If press space and have more than 0 light
+        {
+            isLaser = false;
+            if (nextFire > fireRate && isCharging == false)
+            {
+                Instantiate(bulletPrefab, spawn, transform.rotation);
+                bulletsound.Play();
+                nextFire = 0;
+                lightCount -= shootCost; // Subtract the shoot cost from the light total
+                updateLightText(); // Update the UI's text
+            }
+            nextCharge += Time.deltaTime;
+            isCharging = true;
+        }
+        else
+        {
+            isLaser = false;
+            isCharging = false;
+            if (nextCharge > laserRate && laserRate != 0/*4 * chargeRate*/)
+            {
+                laserTimer = 0;
+                isLaser = true;
+                nextCharge = 0;
+            }
+            else if (nextCharge > SprayRate && SprayRate != 0) //charge shot: 3x bullets or a charged bullet prefab
+            {
+                //Instantiate(bulletPrefab, spawn + transform.right * 2, transform.rotation);
+                //Instantiate(bulletPrefab, spawn - transform.right * 2, transform.rotation);
+                //Instantiate(bulletPrefab, spawn, transform.rotation);
+                for (int i = 0; i < SprayNum; i++)
+                {
+                    spread = Random.Range(-SprayAngle, SprayAngle);
+                    GameObject bullet = Instantiate(bulletPrefab, spawn, transform.rotation);
+                    bullet.GetComponent<Rigidbody2D>().rotation += spread;
+                    //Instantiate(bulletPrefab, spawn, transform.rotation * Quaternion.AngleAxis(spread, transform.up));
+                    //Instantiate(bulletPrefab, spawn, transform.rotation * Quaternion.Euler(spread, transform.up));
+                }
+                bulletsound.Play();
+                lightCount -= shootCost; // Subtract the shoot cost from the light total
+                updateLightText(); // Update the UI's text
+                nextCharge = 0;
+            }
+            else if (nextCharge > chargeRate && chargeRate != 0)
+            {
+                Instantiate(bulletPrefab, spawn + transform.right * 2, transform.rotation);
+                Instantiate(bulletPrefab, spawn - transform.right * 2, transform.rotation);
+                Instantiate(bulletPrefab, spawn, transform.rotation);
+                bulletsound.Play();
+                lightCount -= shootCost; // Subtract the shoot cost from the light total
+                updateLightText(); // Update the UI's text
+                nextCharge = 0;
+            }
         }
 
         //-- Connor --//
@@ -151,7 +252,7 @@ public class PlayerCtrl : MonoBehaviour
             updateLightText();
         }
         // If the player is hit without shields up, reduce players health --Trevor--
-        if (other.gameObject.CompareTag("Enemy") && GetComponent<ShieldScript>().IsShieldActive() == false)
+        if (other.gameObject.CompareTag("Enemy") && GetComponent<ShieldScript>() != null && GetComponent<ShieldScript>().IsShieldActive() == false)
         {
             currentHealth -= 10;
             Debug.Log("Player hit, health: " + currentHealth);
