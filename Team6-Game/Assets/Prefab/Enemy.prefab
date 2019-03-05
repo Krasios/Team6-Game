@@ -144,7 +144,7 @@ MonoBehaviour:
   bullet: {fileID: 2768544143169931515, guid: bee72bb4211a44248a740053d15dc276, type: 3}
   offset_distance: 12
   spray_angle: 30
-  spray_chance: 1
+  spray_chance: 5
 --- !u!50 &1889750614717260165
 Rigidbody2D:
   serializedVersion: 4

@@ -70,7 +70,7 @@ public class ShieldScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other) {
         if (shieldActive && other.gameObject.CompareTag("Enemy")) {
-            tutorialCtrl.instance.asteroidZapped();
+            // tutorialCtrl.instance.asteroidZapped();
             other.gameObject.SetActive(false);
             shield.GetComponent<AudioSource>().PlayOneShot(shieldHit, 0.2F);
             hitsTaken += 1;
