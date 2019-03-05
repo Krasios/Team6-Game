@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7584780050211162930}
   - component: {fileID: 1422115210900811558}
   - component: {fileID: 4936747473757041796}
+  - component: {fileID: 4195557744205506407}
   - component: {fileID: 1889750614717260165}
   m_Layer: 0
   m_Name: Enemy
@@ -128,6 +129,22 @@ MonoBehaviour:
   move_range: {x: 1000, y: 1000}
   enemy_range: 75
   withdraw_range: 50
+--- !u!114 &4195557744205506407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9139141795499966603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73a3c9c6bb5f4034882825196e813d8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 2768544143169931515, guid: bee72bb4211a44248a740053d15dc276, type: 3}
+  offset_distance: 12
+  spray_angle: 30
+  spray_chance: 1
 --- !u!50 &1889750614717260165
 Rigidbody2D:
   serializedVersion: 4
