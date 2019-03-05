@@ -19,7 +19,7 @@ public class tutorialShield : MonoBehaviour
     private float currentAnimated = 0f;
     private int maxHits = 10;
     private int hitsTaken = 0;
-    private bool shieldActive;
+    public bool shieldActive;
     private bool isHit = false;
     private float timeRegen;
     private float timeToRegen = 10;

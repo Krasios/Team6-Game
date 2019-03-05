@@ -17,6 +17,7 @@ public class PlayerCtrl : MonoBehaviour
     public Text lightText;
     public int shootCost;
     public bool joystick;
+
     private ParticleSystem shipLightParticles;
     float maxParticleSpawnRate = 50; // Maximum spawn rate of particles
  
@@ -151,7 +152,9 @@ public class PlayerCtrl : MonoBehaviour
             updateLightText();
         }
         // If the player is hit without shields up, reduce players health --Trevor--
-        if (other.gameObject.CompareTag("Enemy") && GetComponent<ShieldScript>().IsShieldActive() == false)
+        if (other.gameObject.CompareTag("Enemy") && 
+            (GetComponent<ShieldScript>()!=null && GetComponent<ShieldScript>().IsShieldActive()==false) ||
+            (GetComponent<tutorialShield>()!=null && GetComponent<tutorialShield>().shieldActive==false))
         {
             currentHealth -= 10;
             Debug.Log("Player hit, health: " + currentHealth);
