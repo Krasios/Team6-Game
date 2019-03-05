@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3766969589282217785}
   - component: {fileID: 7584780050211162930}
   - component: {fileID: 1422115210900811558}
+  - component: {fileID: 4936747473757041796}
   - component: {fileID: 1889750614717260165}
   m_Layer: 0
   m_Name: Enemy
@@ -105,13 +106,28 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9139141795499966603}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eccc2b01bdc78534eab343149680c6dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   s: 30
-  player: {fileID: 2825867070171518733, guid: 2063f7e3786e9914680e7b4f0b6abc6f, type: 3}
+--- !u!114 &4936747473757041796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9139141795499966603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 536280b7b8cc28d438627360ec9bc0c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 50
+  move_range: {x: 1000, y: 1000}
+  enemy_range: 75
+  withdraw_range: 50
 --- !u!50 &1889750614717260165
 Rigidbody2D:
   serializedVersion: 4
