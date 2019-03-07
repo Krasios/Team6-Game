@@ -17,8 +17,8 @@ public class MothershipCtrl : MonoBehaviour
         mothershipLight = 0.0f;
         //starts mothership light slider to the far left
         slider.value = 0;
-        //how much light needed to win
-        mothershipGoal = 500;
+        //how much light needed to win the first level
+        mothershipGoal = 3000;
     }
 
     // Update is called once per frame
@@ -29,7 +29,7 @@ public class MothershipCtrl : MonoBehaviour
 
         if (mothershipLight >= mothershipGoal)
         {
-            // Load Level 2
+            // Load next scene
             SceneSwitch();
         }
     }
@@ -54,6 +54,7 @@ public class MothershipCtrl : MonoBehaviour
         if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0 )
         {
             SceneManager.LoadScene("Level2Demo", LoadSceneMode.Single);
+            mothershipGoal = 6000; // Set light to beat the second level
         }
         else if (string.Compare(SceneManager.GetActiveScene().name, "Level2Demo") == 0)
         {

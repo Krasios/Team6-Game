@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerCtrl : MonoBehaviour
 {
@@ -78,6 +79,12 @@ public class PlayerCtrl : MonoBehaviour
         // Animates the light and health bars as they gain or lose value --Trevor--
         healthSlider.value = Mathf.Lerp(healthSlider.value, currentHealth / maxHealth, 0.05f);
         lightSlider.value = Mathf.Lerp(lightSlider.value, lightCount / maxLight, 0.05f);
+
+        // Connor, Load the death scene
+        if (currentHealth <= 0)
+        {
+            SceneManager.LoadScene("LevelDeath", LoadSceneMode.Single);
+        }
     }
 
     void FixedUpdate() {
