@@ -266,8 +266,8 @@ public class PlayerCtrl : MonoBehaviour
         }
         // If the player is hit without shields up, reduce players health --Trevor//edited for tutorial Sharon--
         if (other.gameObject.CompareTag("Enemy") && 
-            (GetComponent<ShieldScript>()!=null && GetComponent<ShieldScript>().IsShieldActive()==false) ||
-            (GetComponent<tutorialShield>()!=null && GetComponent<tutorialShield>().shieldActive==false))
+            ((GetComponent<ShieldScript>()!=null && GetComponent<ShieldScript>().shieldActive==false) ||
+            (GetComponent<tutorialShield>()!=null && GetComponent<tutorialShield>().shieldActive==false)))
         {
             currentHealth -= 10;
             Debug.Log("Player hit, health: " + currentHealth);

@@ -19,7 +19,7 @@ public class ShieldScript : MonoBehaviour
     private float currentAnimated = 0f;
     private float maxHits = 10;
     private float hitsTaken = 0;
-    private bool shieldActive;
+    public bool shieldActive;
     private bool isHit = false;
     private float timeRegen;
     private float timeToRegen = 10;
@@ -85,12 +85,5 @@ public class ShieldScript : MonoBehaviour
                 shield.GetComponent<CircleCollider2D>().enabled = false;
             }
         }
-    }
-
-    // ShieldActive status getter for calling from player ctrl --Trevor--
-    public bool IsShieldActive()
-    {
-        Debug.Log(shieldActive);
-        return shieldActive;
     }
 }
