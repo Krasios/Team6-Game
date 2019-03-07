@@ -158,6 +158,11 @@ public class PlayerCtrl : MonoBehaviour
             /*&& (lightCount > 0)*/  && isLaser == false)
         // If press space and have more than 0 light
         {
+            if (string.Compare(SceneManager.GetActiveScene().name, "LevelDeath") == 0)
+            {
+                SceneManager.LoadScene("RopeTest", LoadSceneMode.Single);
+            }
+
             isLaser = false;
             if (nextFire > fireRate && isCharging == false)
             {

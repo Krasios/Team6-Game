@@ -1278,7 +1278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6baf65c675ce9ba4fb81faa2cf862da5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 150
   pureLightPrefab: {fileID: 6901870841494973818, guid: 5af226d2400bed248986c36997bce58e,
     type: 3}
   player: {fileID: 0}
@@ -1575,6 +1575,7 @@ MonoBehaviour:
   damageShield: {fileID: 21300000, guid: 38d98093be4de4f49ab44561c4385758, type: 3}
   shieldHit: {fileID: 8300000, guid: 2365951736c38be4ca9e4e1ad37fa6df, type: 3}
   shieldRegen: {fileID: 8300000, guid: e7e38564f4a7ace409df58f7dae843cd, type: 3}
+  shieldActive: 0
 --- !u!224 &1811451257 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3609418344982661800, guid: 6201ad0533cc7a441875a67c1e86fefa,

@@ -54,7 +54,7 @@ public class MothershipCtrl : MonoBehaviour
         if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0 )
         {
             SceneManager.LoadScene("Level2Demo", LoadSceneMode.Single);
-            mothershipGoal = 6000; // Set light to beat the second level
+            mothershipGoal = 4000; // Set light to beat the second level
         }
         else if (string.Compare(SceneManager.GetActiveScene().name, "Level2Demo") == 0)
         {

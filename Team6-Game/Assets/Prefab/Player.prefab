@@ -133,12 +133,12 @@ MonoBehaviour:
   maxHealth: 100
   maxLight: 1000
   fireRate: 0.5
-  chargeRate: 1
-  laserRate: 4
-  laserLength: 2
+  chargeRate: 10
+  laserRate: 2
+  laserLength: 0.5
   SprayNum: 5
-  SprayRate: 2
-  SprayAngle: 10
+  SprayRate: 1
+  SprayAngle: 30
   enableSpray: 1
 --- !u!198 &2825867070171518725
 ParticleSystem:
