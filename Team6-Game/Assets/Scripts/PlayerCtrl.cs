@@ -9,6 +9,7 @@ public class PlayerCtrl : MonoBehaviour
     public float speed;
     public string name;
     public GameObject bulletPrefab;
+    private Camera camera;
 
     //public Light playerLight;
     private Rigidbody2D rigidB;
@@ -65,6 +66,8 @@ public class PlayerCtrl : MonoBehaviour
         // Sets the health bar to full instantly at the start of the level
         healthSlider.value =  1;
 
+        camera = Camera.main; // Set the cam var to the current main camera
+
         // Duy and Connor, Shooting Stuff 
         bulletsound = GetComponent<AudioSource>();
         nextCharge = 0;
@@ -85,6 +88,19 @@ public class PlayerCtrl : MonoBehaviour
         {
             SceneManager.LoadScene("LevelDeath", LoadSceneMode.Single);
         }
+
+
+
+        // Prevent snapping back to neutral position and rotate player when using joystick
+        if ((Mathf.Abs(xRot) > 0.0 || Mathf.Abs(yRot) > 0.0) && joystick)
+        {
+            UpdatePlayerRotStick();
+        }
+        else // Make the player face the mouse when using mouse and keyboard
+        {
+            faceMouse(); // Connor
+        }
+
     }
 
     void FixedUpdate() {
@@ -98,19 +114,17 @@ public class PlayerCtrl : MonoBehaviour
         {
             moveHorizontal = Input.GetAxis("Keyboard-Horizontal-" + name);
             moveVertical = Input.GetAxis("Keyboard-Vertical-" + name);
-            xRot = Input.GetAxis("keyboardXrotion-" + name);
-            yRot = Input.GetAxis("keyboardYrotion-" + name);
+
+            // Unused now
+            //xRot = Input.GetAxis("keyboardXrotion-" + name);
+            //yRot = Input.GetAxis("keyboardYrotion-" + name);
+            
         }
         
 
         
 
-        // Prevent snapping back to neutral position
-        if (Mathf.Abs(xRot) > 0.0 || Mathf.Abs(yRot) > 0.0)
-        {
-            UpdatePlayerRot();
-        }
-
+        
         // Decelerate the ship when left stick has no movement
         if ((Mathf.Abs(moveHorizontal) <= 0.05 && Mathf.Abs(moveHorizontal) >= 0)
             && (Mathf.Abs(moveVertical) <= 0.05 && Mathf.Abs(moveVertical) >= 0))
@@ -154,8 +168,7 @@ public class PlayerCtrl : MonoBehaviour
                 bulletsound.Play();
             }
         }
-        else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name))
-            /*&& (lightCount > 0)*/  && isLaser == false)
+        else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name)) || Input.GetMouseButtonDown(0) && isLaser == false)
         // If press space and have more than 0 light
         {
             if (string.Compare(SceneManager.GetActiveScene().name, "LevelDeath") == 0)
@@ -230,8 +243,21 @@ public class PlayerCtrl : MonoBehaviour
 
     }
 
-    // Connor and Trevor
-    void UpdatePlayerRot()
+    // Rotate the player to face the mouse cursor -- Connor
+    void faceMouse()
+    {
+        //Vector3 mouseWorldPos = camera.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+        Vector3 mousWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // Connor, Set the rotation of the sprite so it always faces the player
+        Vector2 relPos = new Vector2(transform.position.x - mousWorldPos.x,
+            transform.position.y - mousWorldPos.y); // Get the relative position from player to this object
+
+        transform.up = relPos; // Change the direction of up to be the relative position's x and y coordinates
+    }
+
+    // Rotate the player character when using a joystick -- Connor and Trevor
+    void UpdatePlayerRotStick()
     {
         float rotSpeed = 15.0f; //  Determine how fast the ship rotates
         //Use arc tan to get radians of in between angle then convert to degrees 
