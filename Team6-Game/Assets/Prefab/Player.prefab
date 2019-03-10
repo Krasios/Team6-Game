@@ -133,13 +133,14 @@ MonoBehaviour:
   maxHealth: 100
   maxLight: 1000
   fireRate: 0.5
-  chargeRate: 10
-  laserRate: 2
-  laserLength: 0.5
-  SprayNum: 5
-  SprayRate: 1
-  SprayAngle: 30
-  enableSpray: 1
+  chargeRate: 3
+  rapidRate: 0.2
+  superRate: 5
+  superLength: 2
+  spreadNum: 3
+  spreadRate: 0.5
+  spreadAngle: 30
+  enableSpray: 0
 --- !u!198 &2825867070171518725
 ParticleSystem:
   m_ObjectHideFlags: 0

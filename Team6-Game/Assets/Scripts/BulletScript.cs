@@ -9,6 +9,7 @@ public class BulletScript : MonoBehaviour
     private Rigidbody2D rb2d;
     public GameObject pureLightPrefab;
     public GameObject player;
+    public GameObject bulletPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,14 @@ public class BulletScript : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy")) {
             //PlayerCtrl player.GetComponent<PlayerCtrl>().lightCount += 10;
             other.gameObject.SetActive(false);//or destroy whichever works better
+            if (transform.localScale.x > 15) //if bullet is enlarged to be over 15
+            {
+                for (int a = 0; a < 8; a++)
+                {
+                    GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+                    bullet.GetComponent<Rigidbody2D>().rotation += a*(360/8);
+                }
+            }
             Instantiate(pureLightPrefab, other.gameObject.transform.position, Quaternion.identity); // Spawn a light where the enemy dies
             gameObject.SetActive(false); //turn off the bullet
         }
