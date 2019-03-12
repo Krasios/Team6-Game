@@ -254,7 +254,44 @@ public class PlayerCtrl : MonoBehaviour
     //--- Store Related Functions -- Connor
     public void buyShotgun()
     {
-        Debug.Log("Bought a gun");
+        Debug.Log("Bought a shotgun");
+        
+    }
+
+    public void buyHominggun()
+    {
+        Debug.Log("Bought a homing gun");
+
+    }
+
+    public void buyMachinegun()
+    {
+        Debug.Log("Bought a machine gun");
+
+    }
+
+    public void buyLaser()
+    {
+        Debug.Log("Bought a laser gun");
+
+    }
+
+    public void buyChargegun()
+    {
+        Debug.Log("Bought a Charge gun");
+
+    }
+
+    public void buyUpgradeBullets()
+    {
+        Debug.Log("Bought an Upgrade for Bullets");
+
+    }
+
+    public void buyUpgradeFireRate()
+    {
+        Debug.Log("Bought an Upgrade for Fire Rate");
+
     }
 
 
