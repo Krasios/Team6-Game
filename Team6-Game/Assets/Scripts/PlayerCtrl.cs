@@ -213,7 +213,7 @@ public class PlayerCtrl : MonoBehaviour
             }
         }
         else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0)) &&
-            Input.GetButton("Jump2-" + name) || Input.GetButton("Fire2-" + name) || Input.GetMouseButton(1))
+            (Input.GetButton("Jump2-" + name) || Input.GetButton("Fire2-" + name) || Input.GetMouseButton(1)))
         {//press both fire buttons
             if (lightCount == maxLight)
             {
