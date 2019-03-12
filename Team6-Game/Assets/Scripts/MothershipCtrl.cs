@@ -40,7 +40,7 @@ public class MothershipCtrl : MonoBehaviour
         {
             if (other.gameObject.GetComponent<PlayerCtrl>().lightCount > 0)
             {
-                int currentPlayerLight = other.gameObject.GetComponent<PlayerCtrl>().lightCount;
+                float currentPlayerLight = other.gameObject.GetComponent<PlayerCtrl>().lightCount;
                 mothershipLight += currentPlayerLight;
                 Debug.Log("Mothership's Current Light: " + mothershipLight.ToString());
                 // Heal the player based on how much light is deposited to the mothership
