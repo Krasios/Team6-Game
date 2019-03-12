@@ -14,6 +14,7 @@ public class PlayerCtrl : MonoBehaviour
     //public Light playerLight;
     private Rigidbody2D rigidB;
 
+    
     // Light Variables -- Connor --
     public float lightCount;
     public Text lightText;
@@ -64,6 +65,7 @@ public class PlayerCtrl : MonoBehaviour
     private float spread;
     public int explosiveCost;
     private AudioSource bulletsound;
+    public bool canShoot; // Connor
 
     void Start() {
         rigidB = GetComponent<Rigidbody2D>();
@@ -91,6 +93,7 @@ public class PlayerCtrl : MonoBehaviour
         isSuper = false;
         isFirstShot = true;
         superTimer = 0;
+
     }
 
     private void Update()
@@ -169,63 +172,68 @@ public class PlayerCtrl : MonoBehaviour
 
         Vector3 spawn = transform.position - transform.up * 5; //spawn bullet at tip of gun
 
-        if (superTimer < superLength && isSuper == true)
-        { //super state, can't shoot anything else
-            isCharging = false;
-            superTimer += Time.deltaTime;
-            SuperFire(spawn);
-        }
-        else if (Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0))
-        // If press button and have more than 0 light
+        // if shooting is enabled
+        if (canShoot == true)
         {
-            isSuper = false;
-            nextSpread = 0;
-            isFirstShot = true;
-            if (nextFire > fireRate && isCharging == false) //only fire once when hold
-                RegularFire(spawn);
-            nextCharge += Time.deltaTime;
-            isCharging = true;
-        }
-        else if (Input.GetButtonUp("Jump-" + name) || Input.GetButtonUp("Fire-" + name) || Input.GetMouseButtonUp(0))
-        { //if let go of button
-            isCharging = false;
-            if (nextCharge > chargeRate && chargeRate != 0)
-            {
-                ExplosiveFire(spawn);
+
+            if (superTimer < superLength && isSuper == true)
+            { //super state, can't shoot anything else
+                isCharging = false;
+                superTimer += Time.deltaTime;
+                SuperFire(spawn);
             }
-        }
-        else if (Input.GetMouseButton(1)) // Right mouse button
-        {
-            nextSpread += Time.deltaTime;
-            if (nextSpread > spreadRate)
+            else if (Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0))
+            // If press button and have more than 0 light
             {
-                if (isFirstShot)
+                isSuper = false;
+                nextSpread = 0;
+                isFirstShot = true;
+                if (nextFire > fireRate && isCharging == false) //only fire once when hold
+                    RegularFire(spawn);
+                nextCharge += Time.deltaTime;
+                isCharging = true;
+            }
+            else if (Input.GetButtonUp("Jump-" + name) || Input.GetButtonUp("Fire-" + name) || Input.GetMouseButtonUp(0))
+            { //if let go of button
+                isCharging = false;
+                if (nextCharge > chargeRate && chargeRate != 0)
                 {
-                    SpreadFire(spawn);
-                    isFirstShot = false;
-                }
-                if (nextFire > rapidRate)
-                {
-                    RapidFire(spawn);
+                    ExplosiveFire(spawn);
                 }
             }
-        }
-        else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0)) && Input.GetMouseButton(1))
-        {//press both fire buttons
-            if (lightCount == maxLight)
+            else if (Input.GetMouseButton(1)) // Right mouse button
             {
-                superTimer = 0;
-                isSuper = true;
-                nextCharge = 0;
-                bulletsound.Play(); //to be replaced with super blast sound
+                nextSpread += Time.deltaTime;
+                if (nextSpread > spreadRate)
+                {
+                    if (isFirstShot)
+                    {
+                        SpreadFire(spawn);
+                        isFirstShot = false;
+                    }
+                    if (nextFire > rapidRate)
+                    {
+                        RapidFire(spawn);
+                    }
+                }
             }
-        }
-        else
-        {
-            isSuper = false;
-            isCharging = false;
-            nextSpread = 0;
-            isFirstShot = true;
+            else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0)) && Input.GetMouseButton(1))
+            {//press both fire buttons
+                if (lightCount == maxLight)
+                {
+                    superTimer = 0;
+                    isSuper = true;
+                    nextCharge = 0;
+                    bulletsound.Play(); //to be replaced with super blast sound
+                }
+            }
+            else
+            {
+                isSuper = false;
+                isCharging = false;
+                nextSpread = 0;
+                isFirstShot = true;
+            }
         }
 
         //-- Connor --//
@@ -242,6 +250,13 @@ public class PlayerCtrl : MonoBehaviour
         
 
     }
+
+    //--- Store Related Functions -- Connor
+    public void buyShotgun()
+    {
+        Debug.Log("Bought a gun");
+    }
+
 
     // Rotate the player to face the mouse cursor -- Connor
     void faceMouse()
