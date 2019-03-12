@@ -18,6 +18,7 @@ public class PlayerCtrl : MonoBehaviour
     public float lightCount;
     public Text lightText;
     public float shootCost;
+    public float explosiveCost;
     public bool joystick;
 
     private ParticleSystem shipLightParticles;
@@ -344,7 +345,7 @@ public class PlayerCtrl : MonoBehaviour
             }
         }
         bulletsound.Play();
-        lightCount -= shootCost* spreadNum; // Subtract the shoot cost from the light total
+        lightCount -= shootCost * spreadNum; // Subtract the shoot cost from the light total
         updateLightText(); // Update the UI's text
         nextCharge = 0;
     }
@@ -353,7 +354,7 @@ public class PlayerCtrl : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, spawn, transform.rotation);
         bullet.gameObject.transform.localScale += bullet.gameObject.transform.localScale;
         bulletsound.Play();
-        lightCount -= shootCost * 5; // Subtract the shoot cost from the light total
+        lightCount -= explosiveCost; // Subtract the shoot cost from the light total
         updateLightText(); // Update the UI's text
         nextCharge = 0;
     }
