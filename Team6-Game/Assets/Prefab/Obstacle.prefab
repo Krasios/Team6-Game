@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1503044301555475536}
   - component: {fileID: 4554243108101084418}
   - component: {fileID: 6321159193715992327}
+  - component: {fileID: 6107607937147961902}
   m_Layer: 0
   m_Name: Obstacle
   m_TagString: Enemy
@@ -118,3 +119,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &6107607937147961902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245643369336124364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 536280b7b8cc28d438627360ec9bc0c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  move_range: {x: 1000, y: 1000}
+  enemy_range: 0
+  withdraw_range: 0

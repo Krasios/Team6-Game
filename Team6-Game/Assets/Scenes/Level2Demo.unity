@@ -819,7 +819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8703d9a01ddb82440a44d5877895202f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstaclePoolSize: 10
+  obstaclePoolSize: 100
   obstaclePrefab: {fileID: 1245643369336124364, guid: 7d315ba565f4d1740a1211c0aaa98c38,
     type: 3}
   spawnRate: 1
@@ -1126,7 +1126,7 @@ PrefabInstance:
     - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
         type: 3}
       propertyPath: joystick
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
         type: 3}
