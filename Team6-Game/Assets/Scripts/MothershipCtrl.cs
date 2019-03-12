@@ -33,15 +33,23 @@ public class MothershipCtrl : MonoBehaviour
             SceneSwitch();
         }
     }
-
+    // Added heal mechanic from depositing light to the mothership -- Trevor
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             if (other.gameObject.GetComponent<PlayerCtrl>().lightCount > 0)
             {
-                mothershipLight += other.gameObject.GetComponent<PlayerCtrl>().lightCount;
+                int currentPlayerLight = other.gameObject.GetComponent<PlayerCtrl>().lightCount;
+                mothershipLight += currentPlayerLight;
                 Debug.Log("Mothership's Current Light: " + mothershipLight.ToString());
+                // Heal the player based on how much light is deposited to the mothership
+                other.gameObject.GetComponent<PlayerCtrl>().currentHealth += currentPlayerLight / 10;
+                // Cap the heal to the maxHealth of the player
+                if (other.gameObject.GetComponent<PlayerCtrl>().currentHealth >= other.gameObject.GetComponent<PlayerCtrl>().maxHealth)
+                {
+                    other.gameObject.GetComponent<PlayerCtrl>().currentHealth = other.gameObject.GetComponent<PlayerCtrl>().maxHealth;
+                }
                 other.gameObject.GetComponent<PlayerCtrl>().lightCount = 0;
                 other.gameObject.GetComponent<PlayerCtrl>().updateLightText();
             }

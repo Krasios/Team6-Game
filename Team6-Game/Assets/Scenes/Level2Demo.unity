@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 100
   orthographic: 1
-  orthographic size: 30
+  orthographic size: 60
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1126,7 +1126,7 @@ PrefabInstance:
     - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
         type: 3}
       propertyPath: joystick
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
         type: 3}
