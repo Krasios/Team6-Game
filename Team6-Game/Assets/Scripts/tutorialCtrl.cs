@@ -61,6 +61,9 @@ public class tutorialCtrl : MonoBehaviour
 
     void SceneSwitch()
     {
+        obstacleGenerators[0].enabled = false;
+        obstacleGenerators[1].enabled = false;
+        obstacleGenerators[2].enabled = false;
         SceneManager.LoadScene("RopeTest", LoadSceneMode.Single);
     }
 }

@@ -45,6 +45,9 @@ public class MothershipCtrl : MonoBehaviour
                 other.gameObject.GetComponent<PlayerCtrl>().lightCount = 0;
                 other.gameObject.GetComponent<PlayerCtrl>().updateLightText();
             }
+        }else{
+            other.gameObject.SetActive(false);
+            Debug.Log(other.gameObject);
         }
     }
 
