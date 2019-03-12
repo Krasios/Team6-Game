@@ -400,7 +400,7 @@ PrefabInstance:
     - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
         type: 3}
       propertyPath: joystick
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
         type: 3}
@@ -412,6 +412,46 @@ PrefabInstance:
       propertyPath: lightSlider
       value: 
       objectReference: {fileID: 762566288}
+    - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
+        type: 3}
+      propertyPath: fireRate
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
+        type: 3}
+      propertyPath: rapidRate
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
+        type: 3}
+      propertyPath: chargeRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
+        type: 3}
+      propertyPath: superRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
+        type: 3}
+      propertyPath: superLength
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
+        type: 3}
+      propertyPath: spreadNum
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
+        type: 3}
+      propertyPath: spreadRate
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
+        type: 3}
+      propertyPath: spreadAngle
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 4375185018451006458, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
         type: 3}
       propertyPath: partner
