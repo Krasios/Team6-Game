@@ -37,8 +37,11 @@ public class PlayerCtrl : MonoBehaviour
     public float maxLight = 1000;
 
     // Bullet var - Duy
-    //ways to shoot: press regular bullet, hold charged shotgun for right trigger.
-    //hold alternate fire for rapid fire stream, double tap for big bullet spreading bomb 
+    //bullet sounds
+    public AudioSource bulletSound;
+    public AudioSource bassSound;
+    //ways to shoot: press regular bullet, hold charged explosive bullet.
+    //hold alternate fire for first spread shot, then rapid fire stream
     //tap both fire buttons for stream of bullets in shotgun spread (laser substitute)
     //recommendation for playtesting: ask players to try each separate button's control scheme.
     public float fireRate; //regular bullet
@@ -62,7 +65,6 @@ public class PlayerCtrl : MonoBehaviour
     private float nextCharge;
     private float nextSpread;
     private float spread;
-    private AudioSource bulletsound;
 
     void Start() {
         rigidB = GetComponent<Rigidbody2D>();
@@ -80,7 +82,6 @@ public class PlayerCtrl : MonoBehaviour
         camera = Camera.main; // Set the cam var to the current main camera
 
         // Duy and Connor, Shooting Stuff 
-        bulletsound = GetComponent<AudioSource>();
         nextCharge = 0;
         nextSpread = 0;
         nextFire = fireRate;
