@@ -19,6 +19,7 @@ public class PlayerCtrl : MonoBehaviour
     public Text lightText;
     public int shootCost;
     public bool joystick;
+    private Light lightComp;
 
     private ParticleSystem shipLightParticles;
     float maxParticleSpawnRate = 50; // Maximum spawn rate of particles
@@ -67,7 +68,7 @@ public class PlayerCtrl : MonoBehaviour
     void Start() {
         rigidB = GetComponent<Rigidbody2D>();
         shipLightParticles = GetComponent<ParticleSystem>();
-        // playerLight = GetComponent<Light>();
+        lightComp = GetComponent<Light>();
 
         // Set initial light properties --Connor--
         lightCount = 100; // Start with 100 units of light
@@ -115,6 +116,9 @@ public class PlayerCtrl : MonoBehaviour
         {
             faceMouse(); // Connor
         }
+
+        // Connor, Set the intensity of the player's light based on their resource count
+        lightComp.intensity = ((lightCount + 300) / 1000) * 3;
 
     }
 

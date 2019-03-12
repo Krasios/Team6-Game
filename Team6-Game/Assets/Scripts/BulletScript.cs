@@ -26,6 +26,18 @@ public class BulletScript : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy")) {
             //PlayerCtrl player.GetComponent<PlayerCtrl>().lightCount += 10;
             other.gameObject.SetActive(false);//or destroy whichever works better
+
+            // if the bullet is large split it into multiple bullets on hit -- Duy
+            if (transform.localScale.x > 15) //if bullet is larger than 15
+            {
+                for (int a = 0; a < 8; a++)
+                {
+                    // 
+                    GameObject bullet = Instantiate(this.gameObject, transform.position, transform.rotation);
+                    bullet.GetComponent<Rigidbody2D>().rotation += a * (360 / 8);
+                }
+            }
+
             Instantiate(pureLightPrefab, other.gameObject.transform.position, Quaternion.identity); // Spawn a light where the enemy dies
             gameObject.SetActive(false); //turn off the bullet
         }
