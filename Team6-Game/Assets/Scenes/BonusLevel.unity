@@ -772,6 +772,11 @@ PrefabInstance:
       propertyPath: lightSlider
       value: 
       objectReference: {fileID: 1706071742}
+    - target: {fileID: 2825867070171518729, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
+        type: 3}
+      propertyPath: canShoot
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2825867070171518731, guid: 2063f7e3786e9914680e7b4f0b6abc6f,
         type: 3}
       propertyPath: m_SortingLayerID
