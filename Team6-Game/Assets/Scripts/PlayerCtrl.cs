@@ -79,7 +79,6 @@ public class PlayerCtrl : MonoBehaviour
     private int fireRateStrength;
 
 
-
     void Start() {
         rigidB = GetComponent<Rigidbody2D>();
         shipLightParticles = GetComponent<ParticleSystem>();
@@ -203,7 +202,7 @@ public class PlayerCtrl : MonoBehaviour
         }
 
 
-        //------- Shooting Shit
+        // Cooldown fo weapons
         nextFire += Time.deltaTime;
         //nextSpread += Time.deltaTime;
 
@@ -277,10 +276,7 @@ public class PlayerCtrl : MonoBehaviour
                         Debug.Log("No Special Weapon Equipped");
 
                         // Temp for testing
-                        if (nextFire > rapidRate)
-                        {
-                            RapidFire(spawn);
-                        }
+                        ExplosiveFire(spawn);
 
                         break;
                     // Machine Gun
@@ -291,7 +287,14 @@ public class PlayerCtrl : MonoBehaviour
                             RapidFire(spawn);
                         }
                         break;
+                    // Machine Gun
+                    case 2:
+                        Debug.Log("Fire Charge gun");
 
+                        // Only fire if the gun has cooled down
+                        if (nextCharge > fireRate)
+                            ExplosiveFire(spawn);
+                        break;
                 }
             }
         }
