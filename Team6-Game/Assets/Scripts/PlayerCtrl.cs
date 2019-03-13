@@ -209,78 +209,165 @@ public class PlayerCtrl : MonoBehaviour
 
         Vector3 spawn = transform.position - transform.up * 5; //spawn bullet at tip of gun
 
-        // if shooting is enabled
-        if (canShoot == true)
+        //----- Shooting 
+        // Duy: shooting mechanics, Connor : Cleaned up code and changed it to work with upgrade system...
+        // ... that Trevor implemented
+        if (canShoot == true) // If the player can shoot
         {
+            // Check the left mouse button was clicked
+            if (Input.GetMouseButton(0))
+            {
+                Debug.Log("Player fired left gun, Gun is: " + primaryGun.ToString());
 
-            if (superTimer < superLength && isSuper == true)
-            { //super state, can't shoot anything else
-                isCharging = false;
-                superTimer += Time.deltaTime;
-                SuperFire(spawn);
-            }
-            else if (Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0))
-            // If press button and have more than 0 light
-            {
-                isSuper = false;
-                nextSpread = 0;
-                isFirstShot = true;
-                if (nextFire > fireRate && isCharging == false) //only fire once when hold
-                    RegularFire(spawn);
-                nextCharge += Time.deltaTime;
-                isCharging = true;
-            }
-            else if (Input.GetButtonUp("Jump-" + name) || Input.GetButtonUp("Fire-" + name) || Input.GetMouseButtonUp(0))
-            { //if let go of button
-                isCharging = false;
-                if (nextCharge > chargeRate && chargeRate != 0)
+                switch (primaryGun)
                 {
-                    ExplosiveFire(spawn);
-                }
-            }
-            else if (Input.GetMouseButton(1)) // Right mouse button
-            {
-                nextSpread += Time.deltaTime;
-                if (nextSpread > spreadRate)
-                {
-                    if (isFirstShot)
-                    {
+                    // Single Shot
+                    case 0:
+                        Debug.Log("Player fired p_singleshot");
+                        if (nextFire > fireRate)
+                            RegularFire(spawn);
+                        nextCharge += Time.deltaTime;
+                        break;
+                    // Shotgun
+                    case 1:
+                        Debug.Log("Player fired p_shotgunshot");
                         SpreadFire(spawn);
-                        isFirstShot = false;
-                    }
-                    if (nextFire > rapidRate)
-                    {
+                        break;
+                    // Shotgun
+                    case 2:
+                        Debug.Log("Player fired p_homingshot");
                         RapidFire(spawn);
-                    }
+                        break;
                 }
             }
-            else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0)) && Input.GetMouseButton(1))
-            {//press both fire buttons
-                if (lightCount == maxLight)
-                {
-                    superTimer = 0;
-                    isSuper = true;
-                    nextCharge = 0;
-                    bulletsound.Play(); //to be replaced with super blast sound
-                }
-            }
-            else
+
+            // Check the right mouse button was clicked
+            if (Input.GetMouseButton(1))
             {
-                isSuper = false;
-                isCharging = false;
-                nextSpread = 0;
-                isFirstShot = true;
+                Debug.Log("Player fired right gun");
+                switch (primaryGun)
+                {
+                    // Single Shot
+                    case 0:
+                        Debug.Log("Player fired p_singleshot");
+                        if (nextFire > fireRate)
+                            RegularFire(spawn);
+                        nextCharge += Time.deltaTime;
+                        break;
+                    // Shotgun
+                    case 1:
+                        Debug.Log("Player fired p_shotgunshot");
+                        SpreadFire(spawn);
+                        break;
+                    // Shotgun
+                    case 2:
+                        Debug.Log("Player fired p_homingshot");
+                        RapidFire(spawn);
+                        break;
+                }
+            }
+
+            // Check if the spacebar was pressed
+            if (Input.GetButton("Keyboard-Jump") )
+            {
+                Debug.Log("Player fired special weapon");
+                switch(specialGun)
+                {
+                    case 0:
+                        Debug.Log("No Special Weapon Equipped");
+
+                        // Temp for testing
+                        if (nextFire > rapidRate)
+                        {
+                            RapidFire(spawn);
+                        }
+
+                        break;
+                    // Machine Gun
+                    case 1:
+                        Debug.Log("Fire machine gun");
+                        if (nextFire > rapidRate)
+                        {
+                            RapidFire(spawn);
+                        }
+                        break;
+
+                }
             }
         }
 
-        //-- Connor --//
-        // Change the particle birth rate based on light
+
+        // if shooting is enabled
+        //if (canShoot == true)
+        //{
+
+        //    if (superTimer < superLength && isSuper == true)
+        //    { //super state, can't shoot anything else
+        //        isCharging = false;
+        //        superTimer += Time.deltaTime;
+        //        SuperFire(spawn);
+        //    }
+        //    else if (Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0))
+        //    // If press button and have more than 0 light
+        //    {
+        //        isSuper = false;
+        //        nextSpread = 0;
+        //        isFirstShot = true;
+        //        if (nextFire > fireRate && isCharging == false) //only fire once when hold
+        //            RegularFire(spawn);
+        //        nextCharge += Time.deltaTime;
+        //        isCharging = true;
+        //    }
+        //    else if (Input.GetButtonUp("Jump-" + name) || Input.GetButtonUp("Fire-" + name) || Input.GetMouseButtonUp(0))
+        //    { //if let go of button
+        //        isCharging = false;
+        //        if (nextCharge > chargeRate && chargeRate != 0)
+        //        {
+        //            ExplosiveFire(spawn);
+        //        }
+        //    }
+        //    else if (Input.GetMouseButton(1)) // Right mouse button
+        //    {
+        //        nextSpread += Time.deltaTime;
+        //        if (nextSpread > spreadRate)
+        //        {
+        //            if (isFirstShot)
+        //            {
+        //                SpreadFire(spawn);
+        //                isFirstShot = false;
+        //            }
+        //            if (nextFire > rapidRate)
+        //            {
+        //                RapidFire(spawn);
+        //            }
+        //        }
+        //    }
+        //    else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0)) && Input.GetMouseButton(1))
+        //    {//press both fire buttons
+        //        if (lightCount == maxLight)
+        //        {
+        //            superTimer = 0;
+        //            isSuper = true;
+        //            nextCharge = 0;
+        //            bulletsound.Play(); //to be replaced with super blast sound
+        //        }
+        //    }
+        //    else
+        //    {
+        //        isSuper = false;
+        //        isCharging = false;
+        //        nextSpread = 0;
+        //        isFirstShot = true;
+        //    }
+        //}
+
+
+        //-- Change the particle birth rate based on player's light -- Connor
         float spawnRate = lightCount / 2;
         if (spawnRate > maxParticleSpawnRate)
         {
             spawnRate = maxParticleSpawnRate;
         }
-        
         var shipPartEmiss = shipLightParticles.emission; // need to make a ref b4 you can set the rate
         shipPartEmiss.rateOverTime = spawnRate; // Set the particle spawn rate
 
@@ -288,7 +375,7 @@ public class PlayerCtrl : MonoBehaviour
 
     }
 
-    //--- Store Related Functions -- Connor / Trevor --
+    //----- Store Related Functions -- Connor && Trevor --
     public void buyShotgun()
     {
         switch (shotgunStrength)
