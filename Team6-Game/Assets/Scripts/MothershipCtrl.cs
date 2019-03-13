@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class MothershipCtrl : MonoBehaviour
 {
     public float mothershipLight;
-    public float mothershipGoal;
+    public int mothershipGoal; // PlayerPrefs
     public Slider slider;
 
     // Start is called before the first frame update
@@ -18,7 +18,7 @@ public class MothershipCtrl : MonoBehaviour
         //starts mothership light slider to the far left
         slider.value = 0;
         //how much light needed to win the first level
-        mothershipGoal = PlayerPrefs.GetInt("MothershipGoal");
+        mothershipGoal = PlayerPrefs.GetInt("MothershipGoal"); 
     }
 
     // Update is called once per frame
@@ -68,20 +68,25 @@ public class MothershipCtrl : MonoBehaviour
             // --Trevor-- Sets level number and next mothership Light Goal, to be called after upgrades
             PlayerPrefs.SetInt("LevelNumber", 1);
             PlayerPrefs.SetInt("MothershipGoal", 4000); // Set light to beat the second level
+            PlayerPrefs.Save();
             GoToUpgrades();
         }
         else if (string.Compare(SceneManager.GetActiveScene().name, "Level2Demo") == 0)
         {
             PlayerPrefs.SetInt("LevelNumber", 2);
             PlayerPrefs.SetInt("MothershipGoal", 6000);
+            PlayerPrefs.Save();
             GoToUpgrades();
         }
-        else if (string.Compare(SceneManager.GetActiveScene().name, " -- Put Level 3 name here -- ") == 0)
-        {
-            PlayerPrefs.SetInt("LevelNumber", 3);
-            PlayerPrefs.SetInt("MothershipGoal", 8000);
-            GoToUpgrades();
-        }
+        //else if (string.Compare(SceneManager.GetActiveScene().name, " -- Put Level 3 name here -- ") == 0)
+        //{
+        //    PlayerPrefs.SetInt("LevelNumber", 3);
+        //    PlayerPrefs.SetInt("MothershipGoal", 8000);
+        //    GoToUpgrades();
+        //}
+        // .
+        // .
+        // .
     }
 
     void GoToUpgrades()
