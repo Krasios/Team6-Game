@@ -384,7 +384,7 @@ Transform:
   m_GameObject: {fileID: 1591163896}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 10, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -637,8 +637,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfAliens: 100
-  spawnLocationX: -300
-  spawnLocationY: -200
+  spawnLocationX: -50
+  spawnLocationY: -50
   areaWidth: 950
   areaHeight: 540
   alienSize: 10
@@ -647,7 +647,8 @@ MonoBehaviour:
   separationWeight: 3
   alignmentWeight: 2
   cohesionWeight: 1
-  avoidPlayerWeight: 1
+  avoidPlayerWeight: 5
+  attractPlayerWeight: 2
   swarmMember: {fileID: 1591163896}
   player: {fileID: 408674249}
 --- !u!114 &1795419122
@@ -663,8 +664,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfAliens: 100
-  spawnLocationX: 300
-  spawnLocationY: 200
+  spawnLocationX: 50
+  spawnLocationY: 50
   areaWidth: 950
   areaHeight: 540
   alienSize: 10
@@ -673,7 +674,8 @@ MonoBehaviour:
   separationWeight: 3
   alignmentWeight: 2
   cohesionWeight: 1
-  avoidPlayerWeight: 1
+  avoidPlayerWeight: 5
+  attractPlayerWeight: 2
   swarmMember: {fileID: 1591163896}
   player: {fileID: 408674249}
 --- !u!4 &1795419123

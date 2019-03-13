@@ -17,6 +17,7 @@ public class SwarmCtrl : MonoBehaviour {
     public float alignmentWeight = 1;
     public float cohesionWeight = 1;
     public float avoidPlayerWeight = 2f;
+    public float attractPlayerWeight = 2f;
     public GameObject swarmMember;
     public GameObject player;
 

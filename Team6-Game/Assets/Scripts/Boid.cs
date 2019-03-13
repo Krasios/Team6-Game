@@ -19,9 +19,11 @@ public class Boid {
     float alignmentWeight;
     float cohesionWeight;
     float avoidWeight;
+    float attractWeight;
     SwarmCtrl swarmCtrl;
 
     private static float MIN_DIST_FROM_PLAYER = 10;
+    private static float MAX_DIST_FROM_PLAYER = 500;
     public Boid(float x, float y, SwarmCtrl _swarmCtrl) {
         swarmCtrl = _swarmCtrl;
         acceleration = new Vector2(0, 0);
@@ -40,6 +42,7 @@ public class Boid {
         alignmentWeight = swarmCtrl.alignmentWeight;
         cohesionWeight = swarmCtrl.cohesionWeight;
         avoidWeight = swarmCtrl.avoidPlayerWeight;
+        attractWeight = swarmCtrl.attractPlayerWeight;
 
         Flock(boids);
         UpdateLocation();
@@ -57,16 +60,19 @@ public class Boid {
         Vector2 alignmentForce  = Align(boids);      // Alignment
         Vector2 cohesionForce  = Cohesion(boids);   // Cohesion
         Vector2 avoidForce = Avoidance(boids);
+        Vector2 attractForce = Attract(boids);
         // Arbitrarily weight these forces
         separationForce *= separationWeight;
         alignmentForce *= alignmentWeight;
         cohesionForce *= cohesionWeight;
         avoidForce *= avoidWeight;
+        attractForce *= attractWeight;
         // Add the force vectors to acceleration
         ApplyForce(separationForce);
         ApplyForce(alignmentForce);
         ApplyForce(cohesionForce);
         ApplyForce(avoidForce);
+        ApplyForce(attractForce);
     }
 
     // Method to update location
@@ -99,13 +105,27 @@ public class Boid {
         if (location.x > viewWidth-size) {location.x = viewWidth-size; velocity.x = -velocity.x;}
         if (location.y > viewHeight-size) {location.y = viewHeight-size; velocity.y = -velocity.y;}
     }
-
+    Vector2 Attract(List<Boid> boids) {
+        float desiredDistance = (1/attractWeight) * MAX_DIST_FROM_PLAYER;
+        Vector2 steer = new Vector2(0, 0);
+        if (Vector2.Distance(location,swarmCtrl.player.transform.position) > desiredDistance) {
+            steer = new Vector2(swarmCtrl.player.transform.position.x,swarmCtrl.player.transform.position.y) - location;
+        
+            if (steer.sqrMagnitude > 0) {
+                // Implement Reynolds: Steering = Desired - Velocity
+                steer.Normalize();
+                steer *= maxSpeed;
+                steer -= velocity;
+                steer = Limit(steer, maxForce);
+            }
+        }
+        return steer;
+    }
     Vector2 Avoidance(List<Boid> boids) {
         float desiredDistance = avoidWeight * MIN_DIST_FROM_PLAYER;
         Vector2 steer = new Vector2(0, 0);
-        if (Vector2.Distance(location,swarmCtrl.player.transform.position) > desiredDistance) {
-            steer = location - new Vector2(swarmCtrl.player.transform.position.x,swarmCtrl.player.transform.position.y);
-        
+        if (Vector2.Distance(location,swarmCtrl.player.transform.position) < desiredDistance) {
+            steer =  location - new Vector2(swarmCtrl.player.transform.position.x,swarmCtrl.player.transform.position.y);
             if (steer.sqrMagnitude > 0) {
                 // Implement Reynolds: Steering = Desired - Velocity
                 steer.Normalize();
