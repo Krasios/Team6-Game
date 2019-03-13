@@ -67,6 +67,19 @@ public class PlayerCtrl : MonoBehaviour
     private AudioSource bulletsound;
     public bool canShoot; // Connor
 
+    private int primaryGun; // playerPref key-value --Trevor
+    private int specialGun; // ''                ''
+
+    private int shotgunStrength;
+    private int homingStrength;
+    private int machineStrength;
+    private int chargeStrength;
+    private int lazerStrength;
+    private int bulletStrength;
+    private int fireRateStrength;
+
+
+
     void Start() {
         rigidB = GetComponent<Rigidbody2D>();
         shipLightParticles = GetComponent<ParticleSystem>();
@@ -78,8 +91,10 @@ public class PlayerCtrl : MonoBehaviour
         shootCost = 2; // Shooting costs 2 light units
 
         // Sets the health bar to full instantly at the start of the level
-        healthSlider.value =  1;
-
+        if (healthSlider)
+        {
+            healthSlider.value = 1;
+        }
         camera = Camera.main; // Set the cam var to the current main camera
 
         // Duy and Connor, Shooting Stuff 
@@ -94,13 +109,35 @@ public class PlayerCtrl : MonoBehaviour
         isFirstShot = true;
         superTimer = 0;
 
+        // Pulls current values for which gun number is equipped weapons --Trevor
+        primaryGun = PlayerPrefs.GetInt("PrimaryGun");
+        specialGun = PlayerPrefs.GetInt("SpecialGun");
+        Debug.Log(primaryGun.ToString() +  specialGun.ToString());
+
+        // Pulls current upgrade strength for each weapon --Trevor
+        shotgunStrength = PlayerPrefs.GetInt("ShotgunStrength");
+        homingStrength = PlayerPrefs.GetInt("HomingStrength");
+        machineStrength = PlayerPrefs.GetInt("MachineStrength");
+        chargeStrength = PlayerPrefs.GetInt("ChargeStrength");
+        lazerStrength = PlayerPrefs.GetInt("LazerStrength");
+        bulletStrength = PlayerPrefs.GetInt("BulletStrength");
+        fireRateStrength = PlayerPrefs.GetInt("FireRateStrength");
+        Debug.Log(shotgunStrength.ToString() + homingStrength.ToString() + machineStrength.ToString()
+        + chargeStrength.ToString() + lazerStrength.ToString() + bulletStrength.ToString() + fireRateStrength.ToString());
+
     }
 
     private void Update()
     {
         // Animates the light and health bars as they gain or lose value --Trevor--
-        healthSlider.value = Mathf.Lerp(healthSlider.value, currentHealth / maxHealth, 0.05f);
-        lightSlider.value = Mathf.Lerp(lightSlider.value, lightCount / maxLight, 0.05f);
+        if (healthSlider != null)
+        {
+            healthSlider.value = Mathf.Lerp(healthSlider.value, currentHealth / maxHealth, 0.05f);
+        }
+        if (lightSlider != null)
+        {
+            lightSlider.value = Mathf.Lerp(lightSlider.value, lightCount / maxLight, 0.05f);
+        }
 
         // Connor, Load the death scene
         if (currentHealth <= 0)
@@ -251,45 +288,206 @@ public class PlayerCtrl : MonoBehaviour
 
     }
 
-    //--- Store Related Functions -- Connor
+    //--- Store Related Functions -- Connor / Trevor --
     public void buyShotgun()
     {
+        switch (shotgunStrength)
+        {
+            case 0:
+                PlayerPrefs.SetInt("ShotgunStrength", 1);
+                break;
+            case 1:
+                PlayerPrefs.SetInt("ShotgunStrength", 2);
+                break;
+            case 2:
+                PlayerPrefs.SetInt("ShotgunStrength", 3);
+                break;
+            case 3:
+                Debug.Log("Cant Upgrade this any more");
+                break;
+            default:
+                Debug.Log("Something went wrong upgrading the shotgun Upgrade");
+                break;
+        }
+        PlayerPrefs.Save();
         Debug.Log("Bought a shotgun");
-        
+    }
+
+    public void equipShotgun()
+    {
+        PlayerPrefs.SetInt("PrimaryGun", 1);       // Note: cHange these to gun selection in the equip screen
+        PlayerPrefs.Save();
     }
 
     public void buyHominggun()
     {
+        switch (homingStrength)
+        {
+            case 0:
+                PlayerPrefs.SetInt("HomingStrength", 1);
+                break;
+            case 1:
+                PlayerPrefs.SetInt("HomingStrength", 2);
+                break;
+            case 2:
+                PlayerPrefs.SetInt("HomingStrength", 3);
+                break;
+            case 3:
+                Debug.Log("Cant Upgrade this any more");
+                break;
+            default:
+                Debug.Log("Something went wrong upgrading the homing upgrade");
+                break;
+        }
+        PlayerPrefs.Save();
         Debug.Log("Bought a homing gun");
 
     }
 
+    public void equipHominggun()
+    {
+        PlayerPrefs.SetInt("PrimaryGun", 2);
+        PlayerPrefs.Save();
+    }
+
     public void buyMachinegun()
     {
+        switch (machineStrength)
+        {
+            case 0:
+                PlayerPrefs.SetInt("MachineStrength", 1);
+                break;
+            case 1:
+                PlayerPrefs.SetInt("MachineStrength", 2);
+                break;
+            case 2:
+                PlayerPrefs.SetInt("MachineStrength", 3);
+                break;
+            case 3:
+                Debug.Log("Cant Upgrade this any more");
+                break;
+            default:
+                Debug.Log("Something went wrong upgrading the machineGun upgrade");
+                break;
+        }
+        PlayerPrefs.Save();
         Debug.Log("Bought a machine gun");
 
     }
 
-    public void buyLaser()
+    public void equipMachinegun()
     {
-        Debug.Log("Bought a laser gun");
-
+        PlayerPrefs.SetInt("SpecialGun", 1);
+        PlayerPrefs.Save();
     }
 
     public void buyChargegun()
     {
+        switch (chargeStrength)
+        {
+            case 0:
+                PlayerPrefs.SetInt("ChargeStrength", 1);
+                break;
+            case 1:
+                PlayerPrefs.SetInt("ChargeStrength", 2);
+                break;
+            case 2:
+                PlayerPrefs.SetInt("ChargeStrength", 3);
+                break;
+            case 3:
+                Debug.Log("Cant Upgrade this any more");
+                break;
+            default:
+                Debug.Log("Something went wrong upgrading the chargeGun upgrade");
+                break;
+        }
+        PlayerPrefs.Save();
         Debug.Log("Bought a Charge gun");
+    }
+
+    public void equipChargegun()
+    {
+        PlayerPrefs.SetInt("SpecialGun", 2);
+        PlayerPrefs.Save();
+    }
+
+    public void buyLaser()
+    {
+        switch (lazerStrength)
+        {
+            case 0:
+                PlayerPrefs.SetInt("LazerStrength", 1);
+                break;
+            case 1:
+                PlayerPrefs.SetInt("LazerStrength", 2);
+                break;
+            case 2:
+                PlayerPrefs.SetInt("LazerStrength", 3);
+                break;
+            case 3:
+                Debug.Log("Cant Upgrade this any more");
+                break;
+            default:
+                Debug.Log("Something went wrong upgrading the lazerGun upgrade");
+                break;
+        }
+        PlayerPrefs.Save();
+        Debug.Log("Bought a laser gun");
 
     }
 
+    public void equipLazer()
+    { 
+        PlayerPrefs.SetInt("SpecialGun", 3);
+        PlayerPrefs.Save();
+    }
+
     public void buyUpgradeBullets()
-    {
+    { 
+        switch (bulletStrength)
+        {
+            case 1:
+                PlayerPrefs.SetInt("BulletStrength", 2);
+                break;
+            case 2:
+                PlayerPrefs.SetInt("BulletStrength", 3);
+                break;
+            case 3:
+                PlayerPrefs.SetInt("BulletStrength", 4);
+                break;
+            case 4:
+                Debug.Log("Cant Upgrade this any more");
+                break;
+            default:
+                Debug.Log("Something went wrong upgrading the bulletStrengh upgrade");
+                break;
+        }
+        PlayerPrefs.Save();
         Debug.Log("Bought an Upgrade for Bullets");
 
     }
 
     public void buyUpgradeFireRate()
-    {
+    { 
+        switch (fireRateStrength)
+        {
+            case 1:
+                PlayerPrefs.SetInt("FireRateStrength", 2);
+                break;
+            case 2:
+                PlayerPrefs.SetInt("FireRateStrength", 3);
+                break;
+            case 3:
+                PlayerPrefs.SetInt("FireRateStrength", 4);
+                break;
+            case 4:
+                Debug.Log("Cant Upgrade this any more");
+                break;
+            default:
+                Debug.Log("Something went wrong upgrading the fireRate upgrade");
+                break;
+        }
+        PlayerPrefs.Save();
         Debug.Log("Bought an Upgrade for Fire Rate");
 
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class upgradeCtrl : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class upgradeCtrl : MonoBehaviour
     public Button chargegun;
     public Button bulletdmg;
     public Button firerate;
+    private int levelNumber; // PlayerPrefs
 
     int uPoints;
 
@@ -21,6 +23,7 @@ public class upgradeCtrl : MonoBehaviour
     {
         uPoints = 2;
         upgradeTxt.text = "Upgrade Points: " + uPoints;
+        levelNumber = PlayerPrefs.GetInt("LevelNumber");
 
     }
 
@@ -52,6 +55,26 @@ public class upgradeCtrl : MonoBehaviour
 
     public void loadNextLevel()
     {
+        // --Trevor-- checks previous level number, stored in PlayerPrefs, and loads the next level accordingly
+        switch (levelNumber)
+        {
+            case 1:
+                SceneManager.LoadScene("Level2Demo", LoadSceneMode.Single);
+                break;
+            //case 2:
+                //SceneManager.LoadScene(" -- Put Level 3 Name Here-- ", LoadSceneMode.Single);
+                //break;
+            //case 3:
+                //SceneManager.LoadScene(" -- Put Level 4 Name Here-- ", LoadSceneMode.Single);
+                //break;
+                //  .
+                //  .
+                //  .
+            default:
+                Debug.Log("This didnt work");
+                break;
+        }
+
         Debug.Log("Load next level button");
     }
 }
