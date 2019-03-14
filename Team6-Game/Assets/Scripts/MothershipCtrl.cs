@@ -75,7 +75,7 @@ public class MothershipCtrl : MonoBehaviour
     void SceneSwitch()
     {
         // Connor and Trevor, Set up mothership when scene switches
-        if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0 )
+        if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0)
         {
             // --Trevor-- Sets level number and next mothership Light Goal, to be called after upgrades
             PlayerPrefs.SetInt("LevelNumber", 1);
@@ -90,15 +90,10 @@ public class MothershipCtrl : MonoBehaviour
             PlayerPrefs.Save();
             GoToUpgrades();
         }
-        //else if (string.Compare(SceneManager.GetActiveScene().name, " -- Put Level 3 name here -- ") == 0)
-        //{
-        //    PlayerPrefs.SetInt("LevelNumber", 3);
-        //    PlayerPrefs.SetInt("MothershipGoal", 8000);
-        //    GoToUpgrades();
-        //}
-        // .
-        // .
-        // .
+        else if (string.Compare(SceneManager.GetActiveScene().name, "BonusLevel") == 0)
+        {
+            SceneManager.LoadScene("LevelVictory", LoadSceneMode.Single);
+        }
     }
 
     // Trevor, Go to the upgrade ship scene
