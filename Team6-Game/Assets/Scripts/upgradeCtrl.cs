@@ -18,7 +18,7 @@ public class upgradeCtrl : MonoBehaviour
 
     int uPoints;
 
-    // Start is called before the first frame update
+    // Connor, Start is called before the first frame update
     void Start()
     {
         uPoints = 2;
@@ -39,6 +39,7 @@ public class upgradeCtrl : MonoBehaviour
         
     }
 
+    // Connor, Let the player spend upgrade points and disable buttons when out of upoints
     public void spendPoint()
     {
         if (uPoints > 0)
@@ -59,6 +60,13 @@ public class upgradeCtrl : MonoBehaviour
         }
     }
 
+    // Connor, Load the equip level before the next battle level
+    public void loadEquipScene()
+    {
+        SceneManager.LoadScene("LevelEquipShip", LoadSceneMode.Single);
+    }
+
+    // Connor and Trevor, Load the next battle level
     public void loadNextLevel()
     {
         // --Trevor-- checks previous level number, stored in PlayerPrefs, and loads the next level accordingly

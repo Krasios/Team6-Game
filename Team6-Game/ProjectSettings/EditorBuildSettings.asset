@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LevelUpgradeShip.unity
     guid: 329280d22e0fed54fb9d07e353b01331
+  - enabled: 1
+    path: Assets/Scenes/LevelEquipShip.unity
+    guid: bbd13ccdf86e65d40b6584649e9aab53
   m_configObjects: {}
