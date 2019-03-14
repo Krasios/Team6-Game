@@ -188,8 +188,13 @@ public class PlayerCtrl : MonoBehaviour
             faceMouse(); // Connor
         }
 
-        // Connor, Set the intensity of the player's light based on their resource count
-        lightComp.intensity = ((lightCount + 300) / 1000) * 2;
+        // Connor, Set the intensity of the player's light based on their resource count,
+        lightComp.intensity = ((lightCount + 900) / 1000) * 2;
+        if (lightComp.intensity > ((4000 + 900) / 1000) * 2)
+        {
+            // Cap how bright the light can get
+            lightComp.intensity = ((4000 + 900) / 1000) * 2;
+        }
 
     }
 
@@ -235,7 +240,7 @@ public class PlayerCtrl : MonoBehaviour
         // Advance weapon cooldown timers
         nextLeftFire += Time.deltaTime;
         nextRightFire += Time.deltaTime;
-        nextSpecialFire += (Time.deltaTime / 2f); //Charge slower than regular weapons
+        nextSpecialFire += ( Time.deltaTime / 2f ); //Charge slower than regular weapons
 
         Vector3 spawn = transform.position - transform.up * 5; //spawn bullet at tip of gun
 
@@ -333,21 +338,23 @@ public class PlayerCtrl : MonoBehaviour
                     // Machine Gun
                     case 1:
                         Debug.Log("Fire machine gun");
-                        if (nextSpecialFire > (fireRateStrength / 3f ) )
+                        if (nextSpecialFire > (fireRateStrength / 12f ))
                         {
                             RapidFire(spawn);
+                            nextSpecialFire = 0;
                         }
-                        nextSpecialFire = 0;
+
                         break;
                     // Machine Gun
                     case 2:
                         Debug.Log("Fire Charge gun");
 
-                        if (nextSpecialFire > fireRateStrength)
+                        if (nextSpecialFire > (fireRateStrength + 0.2f))
                         {
                             ExplosiveFire(spawn);
+                            nextSpecialFire = 0;
                         }
-                        nextSpecialFire = 0;
+                        
                         break;
                 }
                 
@@ -421,7 +428,7 @@ public class PlayerCtrl : MonoBehaviour
 
 
         //-- Change the particle birth rate based on player's light -- Connor
-        float spawnRate = lightCount / 2;
+        float spawnRate = lightCount / 4f;
         if (spawnRate > maxParticleSpawnRate)
         {
             spawnRate = maxParticleSpawnRate;
@@ -741,7 +748,7 @@ public class PlayerCtrl : MonoBehaviour
     void ExplosiveFire(Vector3 spawn) //scale bullet up, in bullet code: if above size 15, explode
     {
         GameObject bullet = Instantiate(bulletPrefab, spawn, transform.rotation);
-        bullet.gameObject.transform.localScale += bullet.gameObject.transform.localScale;
+        bullet.gameObject.transform.localScale += 1.5f * bullet.gameObject.transform.localScale;
         bulletsound.Play();
         //lightCount -= explosiveCost; // Subtract the shoot cost from the light total
         //updateLightText(); // Update the UI's text
