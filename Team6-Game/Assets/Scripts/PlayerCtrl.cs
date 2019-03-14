@@ -93,6 +93,13 @@ public class PlayerCtrl : MonoBehaviour
 
             PlayerPrefs.Save();
         }
+        // Need this rn or fire rate doesnt work on  levels past tutorial and 1
+        else
+        {
+            PlayerPrefs.SetFloat("FireRateStrength", 1f);
+            PlayerPrefs.SetFloat("BulletStrength", 1f);
+            PlayerPrefs.Save();
+        }
         
     }
 
@@ -617,7 +624,7 @@ public class PlayerCtrl : MonoBehaviour
                 PlayerPrefs.SetFloat("FireRateStrength", 0.6f);
                 break;
             case 3:
-                PlayerPrefs.SetFloat("FireRateStrength", 0.3f);
+                PlayerPrefs.SetFloat("FireRateStrength", 0.4f);
                 break;
             case 4:
                 Debug.Log("Cant Upgrade this any more");
