@@ -7,6 +7,7 @@ public class MainMenuScript : MonoBehaviour
 {
     public void PlayGame()
     {
+        // Load the first scene in the build order after this one
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void QuitGame()
