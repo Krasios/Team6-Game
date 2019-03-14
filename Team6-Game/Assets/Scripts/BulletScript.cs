@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BulletScript : MonoBehaviour
 {
-    public float speed = 6;
+    public float speed;
 
     private Rigidbody2D rb2d;
     public GameObject pureLightPrefab;
@@ -27,13 +27,14 @@ public class BulletScript : MonoBehaviour
             //PlayerCtrl player.GetComponent<PlayerCtrl>().lightCount += 10;
             other.gameObject.SetActive(false);//or destroy whichever works better
 
-            // if the bullet is large split it into multiple bullets on hit -- Duy
-            if (transform.localScale.x > 15) //if bullet is larger than 15
+            // Connor and Duy, if using the charge gun the bullet splinters with large bullets
+            if (PlayerPrefs.GetInt("SpecialGun") == 2 && (transform.localScale.x >= 10f) )
             {
                 for (int a = 0; a < 8; a++)
                 {
                     // 
                     GameObject bullet = Instantiate(this.gameObject, transform.position, transform.rotation);
+                    bullet.transform.localScale = new Vector3(bullet.transform.localScale.x - 3f , bullet.transform.localScale.y - 3f, bullet.transform.localScale.z);
                     bullet.GetComponent<Rigidbody2D>().rotation += a * (360 / 8);
                 }
             }

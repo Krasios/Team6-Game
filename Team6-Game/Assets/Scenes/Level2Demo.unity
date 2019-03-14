@@ -705,7 +705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8703d9a01ddb82440a44d5877895202f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstaclePoolSize: 40
+  obstaclePoolSize: 70
   obstaclePrefab: {fileID: 9139141795499966603, guid: b496644f187043b45ab28daa20e882b9,
     type: 3}
   spawnRate: 0.5
@@ -992,12 +992,12 @@ PrefabInstance:
     - target: {fileID: 4616843070620376231, guid: c610abaa05422f143b96ddb49f0b430d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.3832703
+      value: -58
       objectReference: {fileID: 0}
     - target: {fileID: 4616843070620376231, guid: c610abaa05422f143b96ddb49f0b430d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18.131958
+      value: -88
       objectReference: {fileID: 0}
     - target: {fileID: 4616843070620376231, guid: c610abaa05422f143b96ddb49f0b430d,
         type: 3}
@@ -1043,6 +1043,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616843070620376231, guid: c610abaa05422f143b96ddb49f0b430d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616843070620376231, guid: c610abaa05422f143b96ddb49f0b430d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c610abaa05422f143b96ddb49f0b430d, type: 3}
