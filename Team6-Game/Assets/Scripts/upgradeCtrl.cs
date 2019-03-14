@@ -56,7 +56,7 @@ public class upgradeCtrl : MonoBehaviour
     public void loadNextLevel()
     {
         // --Trevor-- checks previous level number, stored in PlayerPrefs, and loads the next level accordingly
-        switch (levelNumber)
+        switch (1) //was levelNumber
         {
             case 1:
                 SceneManager.LoadScene("Level2Demo", LoadSceneMode.Single);
