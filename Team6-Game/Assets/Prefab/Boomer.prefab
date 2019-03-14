@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8576081510710534679}
   - component: {fileID: 5567150101695907814}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: Boomer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,6 +72,9 @@ MonoBehaviour:
   pureLightPrefab: {fileID: 6901870841494973818, guid: 5af226d2400bed248986c36997bce58e,
     type: 3}
   player: {fileID: 2825867070171518733, guid: 2063f7e3786e9914680e7b4f0b6abc6f, type: 3}
+  regularPrefab: {fileID: 2768544143169931515, guid: bee72bb4211a44248a740053d15dc276,
+    type: 3}
+  rotateSpeed: 400
 --- !u!212 &538746697986395313
 SpriteRenderer:
   m_ObjectHideFlags: 0

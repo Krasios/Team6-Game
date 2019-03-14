@@ -9,6 +9,7 @@ public class BulletScript : MonoBehaviour
     private Rigidbody2D rb2d;
     public GameObject pureLightPrefab;
     public GameObject player;
+    public GameObject regularPrefab;
     public float rotateSpeed = 400f;
     // Start is called before the first frame update
     void Start()
@@ -28,9 +29,9 @@ public class BulletScript : MonoBehaviour
             float rotateAmount = Vector3.Cross(direction, -transform.up).z;
             rb2d.angularVelocity = -rotateAmount * rotateSpeed;
         }
-        if (gameObject.name == "Boomer")
+        if (gameObject.name == "Boomer(Clone")
         {
-            //speed = ExplosiveTypeSpeed; for reduced explosive speed? may omit
+            speed = speed*0.75f; // for reduced explosive speed? may omit
         }
         rb2d.velocity = -transform.up * speed;
     }
@@ -45,9 +46,13 @@ public class BulletScript : MonoBehaviour
             //PlayerCtrl player.GetComponent<PlayerCtrl>().lightCount += 10;
             other.gameObject.SetActive(false);//or destroy whichever works better
             Instantiate(pureLightPrefab, other.gameObject.transform.position, Quaternion.identity); // Spawn a light where the enemy dies
-            if (gameObject.name == "Boomer")
+            if (gameObject.name == "Boomer(Clone)")
             {
-                //Instantiate(gameObject);
+                for (int a=0;a<8;a++)
+                {
+                    GameObject bullet = Instantiate(regularPrefab, transform.position, transform.rotation);
+                    bullet.GetComponent<Rigidbody2D>().rotation += 360 * a / 7;
+                }
             }
             gameObject.SetActive(false); //turn off the bullet
         }

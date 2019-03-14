@@ -162,6 +162,10 @@ MonoBehaviour:
   name: p1
   bulletPrefab: {fileID: 2768544143169931515, guid: bee72bb4211a44248a740053d15dc276,
     type: 3}
+  homingPrefab: {fileID: 2768544143169931515, guid: 9fcffe12a9f71c144a292839c93e370f,
+    type: 3}
+  explodePrefab: {fileID: 2768544143169931515, guid: 2f9882682f6368f489350d0b218e5257,
+    type: 3}
   lightCount: 0
   lightText: {fileID: 0}
   shootCost: 5

@@ -10,6 +10,7 @@ public class PlayerCtrl : MonoBehaviour
     public string name;
     public GameObject bulletPrefab;
     public GameObject homingPrefab;
+    public GameObject explodePrefab;
     private Camera camera;
 
     //public Light playerLight;
@@ -179,7 +180,7 @@ public class PlayerCtrl : MonoBehaviour
             nextSpread = 0;
             isFirstShot = true;
             if (nextFire > fireRate && isCharging == false) //only fire once when hold
-                HomingFire(spawn);//RegularFire(spawn);
+                HomingFire(spawn);//RegularFire(spawn); //ExplosiveFire(spawn);
             nextCharge += Time.deltaTime;
             isCharging = true;
         }
@@ -343,7 +344,7 @@ public class PlayerCtrl : MonoBehaviour
     }
     void ExplosiveFire(Vector3 spawn) //scale bullet up, in bullet code: if above size 15, explode
     {
-        GameObject bullet = Instantiate(bulletPrefab, spawn, transform.rotation);
+        GameObject bullet = Instantiate(explodePrefab, spawn, transform.rotation);
         bullet.gameObject.transform.localScale += bullet.gameObject.transform.localScale;
         bulletsound.Play();
         lightCount -= explosiveCost; // Subtract the shoot cost from the light total
