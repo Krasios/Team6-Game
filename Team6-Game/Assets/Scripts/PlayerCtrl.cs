@@ -9,18 +9,17 @@ public class PlayerCtrl : MonoBehaviour
     public float speed;
     public string name;
     public GameObject bulletPrefab;
+    public GameObject homingPrefab;
     private Camera camera;
 
     //public Light playerLight;
     private Rigidbody2D rigidB;
 
-    
     // Light Variables -- Connor --
     public float lightCount;
     public Text lightText;
     public int shootCost;
     public bool joystick;
-    private Light lightComp;
 
     private ParticleSystem shipLightParticles;
     float maxParticleSpawnRate = 50; // Maximum spawn rate of particles
@@ -65,25 +64,11 @@ public class PlayerCtrl : MonoBehaviour
     private float spread;
     public int explosiveCost;
     private AudioSource bulletsound;
-    public bool canShoot; // Connor
-
-    private int primaryGun; // playerPref key-value --Trevor
-    private int specialGun; // ''                ''
-
-    private int shotgunStrength;
-    private int homingStrength;
-    private int machineStrength;
-    private int chargeStrength;
-    private int lazerStrength;
-    private int bulletStrength;
-    private int fireRateStrength;
-
-
 
     void Start() {
         rigidB = GetComponent<Rigidbody2D>();
         shipLightParticles = GetComponent<ParticleSystem>();
-        lightComp = GetComponent<Light>();
+        // playerLight = GetComponent<Light>();
 
         // Set initial light properties --Connor--
         lightCount = 100; // Start with 100 units of light
@@ -91,10 +76,8 @@ public class PlayerCtrl : MonoBehaviour
         shootCost = 2; // Shooting costs 2 light units
 
         // Sets the health bar to full instantly at the start of the level
-        if (healthSlider)
-        {
-            healthSlider.value = 1;
-        }
+        healthSlider.value =  1;
+
         camera = Camera.main; // Set the cam var to the current main camera
 
         // Duy and Connor, Shooting Stuff 
@@ -108,36 +91,13 @@ public class PlayerCtrl : MonoBehaviour
         isSuper = false;
         isFirstShot = true;
         superTimer = 0;
-
-        // Pulls current values for which gun number is equipped weapons --Trevor
-        primaryGun = PlayerPrefs.GetInt("PrimaryGun");
-        specialGun = PlayerPrefs.GetInt("SpecialGun");
-        Debug.Log(primaryGun.ToString() +  specialGun.ToString());
-
-        // Pulls current upgrade strength for each weapon --Trevor
-        shotgunStrength = PlayerPrefs.GetInt("ShotgunStrength");
-        homingStrength = PlayerPrefs.GetInt("HomingStrength");
-        machineStrength = PlayerPrefs.GetInt("MachineStrength");
-        chargeStrength = PlayerPrefs.GetInt("ChargeStrength");
-        lazerStrength = PlayerPrefs.GetInt("LazerStrength");
-        bulletStrength = PlayerPrefs.GetInt("BulletStrength");
-        fireRateStrength = PlayerPrefs.GetInt("FireRateStrength");
-        Debug.Log(shotgunStrength.ToString() + homingStrength.ToString() + machineStrength.ToString()
-        + chargeStrength.ToString() + lazerStrength.ToString() + bulletStrength.ToString() + fireRateStrength.ToString());
-
     }
 
     private void Update()
     {
         // Animates the light and health bars as they gain or lose value --Trevor--
-        if (healthSlider != null)
-        {
-            healthSlider.value = Mathf.Lerp(healthSlider.value, currentHealth / maxHealth, 0.05f);
-        }
-        if (lightSlider != null)
-        {
-            lightSlider.value = Mathf.Lerp(lightSlider.value, lightCount / maxLight, 0.05f);
-        }
+        healthSlider.value = Mathf.Lerp(healthSlider.value, currentHealth / maxHealth, 0.05f);
+        lightSlider.value = Mathf.Lerp(lightSlider.value, lightCount / maxLight, 0.05f);
 
         // Connor, Load the death scene
         if (currentHealth <= 0)
@@ -156,9 +116,6 @@ public class PlayerCtrl : MonoBehaviour
         {
             faceMouse(); // Connor
         }
-
-        // Connor, Set the intensity of the player's light based on their resource count
-        lightComp.intensity = ((lightCount + 300) / 1000) * 3;
 
     }
 
@@ -209,68 +166,63 @@ public class PlayerCtrl : MonoBehaviour
 
         Vector3 spawn = transform.position - transform.up * 5; //spawn bullet at tip of gun
 
-        // if shooting is enabled
-        if (canShoot == true)
+        if (superTimer < superLength && isSuper == true)
+        { //super state, can't shoot anything else
+            isCharging = false;
+            superTimer += Time.deltaTime;
+            SuperFire(spawn);
+        }
+        else if (Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0))
+        // If press button and have more than 0 light
         {
-
-            if (superTimer < superLength && isSuper == true)
-            { //super state, can't shoot anything else
-                isCharging = false;
-                superTimer += Time.deltaTime;
-                SuperFire(spawn);
-            }
-            else if (Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0))
-            // If press button and have more than 0 light
+            isSuper = false;
+            nextSpread = 0;
+            isFirstShot = true;
+            if (nextFire > fireRate && isCharging == false) //only fire once when hold
+                HomingFire(spawn);//RegularFire(spawn);
+            nextCharge += Time.deltaTime;
+            isCharging = true;
+        }
+        else if (Input.GetButtonUp("Jump-" + name) || Input.GetButtonUp("Fire-" + name) || Input.GetMouseButtonUp(0))
+        { //if let go of button
+            isCharging = false;
+            if (nextCharge > chargeRate && chargeRate != 0)
             {
-                isSuper = false;
-                nextSpread = 0;
-                isFirstShot = true;
-                if (nextFire > fireRate && isCharging == false) //only fire once when hold
-                    RegularFire(spawn);
-                nextCharge += Time.deltaTime;
-                isCharging = true;
+                ExplosiveFire(spawn);
             }
-            else if (Input.GetButtonUp("Jump-" + name) || Input.GetButtonUp("Fire-" + name) || Input.GetMouseButtonUp(0))
-            { //if let go of button
-                isCharging = false;
-                if (nextCharge > chargeRate && chargeRate != 0)
+        }
+        else if (Input.GetMouseButton(1)) // Right mouse button
+        {
+            nextSpread += Time.deltaTime;
+            if (nextSpread > spreadRate)
+            {
+                if (isFirstShot)
                 {
-                    ExplosiveFire(spawn);
+                    SpreadFire(spawn);
+                    isFirstShot = false;
+                }
+                if (nextFire > rapidRate)
+                {
+                    RapidFire(spawn);
                 }
             }
-            else if (Input.GetMouseButton(1)) // Right mouse button
+        }
+        else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0)) && Input.GetMouseButton(1))
+        {//press both fire buttons
+            if (lightCount == maxLight)
             {
-                nextSpread += Time.deltaTime;
-                if (nextSpread > spreadRate)
-                {
-                    if (isFirstShot)
-                    {
-                        SpreadFire(spawn);
-                        isFirstShot = false;
-                    }
-                    if (nextFire > rapidRate)
-                    {
-                        RapidFire(spawn);
-                    }
-                }
+                superTimer = 0;
+                isSuper = true;
+                nextCharge = 0;
+                bulletsound.Play(); //to be replaced with super blast sound
             }
-            else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0)) && Input.GetMouseButton(1))
-            {//press both fire buttons
-                if (lightCount == maxLight)
-                {
-                    superTimer = 0;
-                    isSuper = true;
-                    nextCharge = 0;
-                    bulletsound.Play(); //to be replaced with super blast sound
-                }
-            }
-            else
-            {
-                isSuper = false;
-                isCharging = false;
-                nextSpread = 0;
-                isFirstShot = true;
-            }
+        }
+        else
+        {
+            isSuper = false;
+            isCharging = false;
+            nextSpread = 0;
+            isFirstShot = true;
         }
 
         //-- Connor --//
@@ -287,211 +239,6 @@ public class PlayerCtrl : MonoBehaviour
         
 
     }
-
-    //--- Store Related Functions -- Connor / Trevor --
-    public void buyShotgun()
-    {
-        switch (shotgunStrength)
-        {
-            case 0:
-                PlayerPrefs.SetInt("ShotgunStrength", 1);
-                break;
-            case 1:
-                PlayerPrefs.SetInt("ShotgunStrength", 2);
-                break;
-            case 2:
-                PlayerPrefs.SetInt("ShotgunStrength", 3);
-                break;
-            case 3:
-                Debug.Log("Cant Upgrade this any more");
-                break;
-            default:
-                Debug.Log("Something went wrong upgrading the shotgun Upgrade");
-                break;
-        }
-        PlayerPrefs.Save();
-        Debug.Log("Bought a shotgun");
-    }
-
-    public void equipShotgun()
-    {
-        PlayerPrefs.SetInt("PrimaryGun", 1);       // Note: cHange these to gun selection in the equip screen
-        PlayerPrefs.Save();
-    }
-
-    public void buyHominggun()
-    {
-        switch (homingStrength)
-        {
-            case 0:
-                PlayerPrefs.SetInt("HomingStrength", 1);
-                break;
-            case 1:
-                PlayerPrefs.SetInt("HomingStrength", 2);
-                break;
-            case 2:
-                PlayerPrefs.SetInt("HomingStrength", 3);
-                break;
-            case 3:
-                Debug.Log("Cant Upgrade this any more");
-                break;
-            default:
-                Debug.Log("Something went wrong upgrading the homing upgrade");
-                break;
-        }
-        PlayerPrefs.Save();
-        Debug.Log("Bought a homing gun");
-
-    }
-
-    public void equipHominggun()
-    {
-        PlayerPrefs.SetInt("PrimaryGun", 2);
-        PlayerPrefs.Save();
-    }
-
-    public void buyMachinegun()
-    {
-        switch (machineStrength)
-        {
-            case 0:
-                PlayerPrefs.SetInt("MachineStrength", 1);
-                break;
-            case 1:
-                PlayerPrefs.SetInt("MachineStrength", 2);
-                break;
-            case 2:
-                PlayerPrefs.SetInt("MachineStrength", 3);
-                break;
-            case 3:
-                Debug.Log("Cant Upgrade this any more");
-                break;
-            default:
-                Debug.Log("Something went wrong upgrading the machineGun upgrade");
-                break;
-        }
-        PlayerPrefs.Save();
-        Debug.Log("Bought a machine gun");
-
-    }
-
-    public void equipMachinegun()
-    {
-        PlayerPrefs.SetInt("SpecialGun", 1);
-        PlayerPrefs.Save();
-    }
-
-    public void buyChargegun()
-    {
-        switch (chargeStrength)
-        {
-            case 0:
-                PlayerPrefs.SetInt("ChargeStrength", 1);
-                break;
-            case 1:
-                PlayerPrefs.SetInt("ChargeStrength", 2);
-                break;
-            case 2:
-                PlayerPrefs.SetInt("ChargeStrength", 3);
-                break;
-            case 3:
-                Debug.Log("Cant Upgrade this any more");
-                break;
-            default:
-                Debug.Log("Something went wrong upgrading the chargeGun upgrade");
-                break;
-        }
-        PlayerPrefs.Save();
-        Debug.Log("Bought a Charge gun");
-    }
-
-    public void equipChargegun()
-    {
-        PlayerPrefs.SetInt("SpecialGun", 2);
-        PlayerPrefs.Save();
-    }
-
-    public void buyLaser()
-    {
-        switch (lazerStrength)
-        {
-            case 0:
-                PlayerPrefs.SetInt("LazerStrength", 1);
-                break;
-            case 1:
-                PlayerPrefs.SetInt("LazerStrength", 2);
-                break;
-            case 2:
-                PlayerPrefs.SetInt("LazerStrength", 3);
-                break;
-            case 3:
-                Debug.Log("Cant Upgrade this any more");
-                break;
-            default:
-                Debug.Log("Something went wrong upgrading the lazerGun upgrade");
-                break;
-        }
-        PlayerPrefs.Save();
-        Debug.Log("Bought a laser gun");
-
-    }
-
-    public void equipLazer()
-    { 
-        PlayerPrefs.SetInt("SpecialGun", 3);
-        PlayerPrefs.Save();
-    }
-
-    public void buyUpgradeBullets()
-    { 
-        switch (bulletStrength)
-        {
-            case 1:
-                PlayerPrefs.SetInt("BulletStrength", 2);
-                break;
-            case 2:
-                PlayerPrefs.SetInt("BulletStrength", 3);
-                break;
-            case 3:
-                PlayerPrefs.SetInt("BulletStrength", 4);
-                break;
-            case 4:
-                Debug.Log("Cant Upgrade this any more");
-                break;
-            default:
-                Debug.Log("Something went wrong upgrading the bulletStrengh upgrade");
-                break;
-        }
-        PlayerPrefs.Save();
-        Debug.Log("Bought an Upgrade for Bullets");
-
-    }
-
-    public void buyUpgradeFireRate()
-    { 
-        switch (fireRateStrength)
-        {
-            case 1:
-                PlayerPrefs.SetInt("FireRateStrength", 2);
-                break;
-            case 2:
-                PlayerPrefs.SetInt("FireRateStrength", 3);
-                break;
-            case 3:
-                PlayerPrefs.SetInt("FireRateStrength", 4);
-                break;
-            case 4:
-                Debug.Log("Cant Upgrade this any more");
-                break;
-            default:
-                Debug.Log("Something went wrong upgrading the fireRate upgrade");
-                break;
-        }
-        PlayerPrefs.Save();
-        Debug.Log("Bought an Upgrade for Fire Rate");
-
-    }
-
 
     // Rotate the player to face the mouse cursor -- Connor
     void faceMouse()
@@ -626,5 +373,14 @@ public class PlayerCtrl : MonoBehaviour
         lightCount -= maxLight;
         updateLightText(); // Update the UI's text
         nextCharge = 0;
+    }
+    void HomingFire(Vector3 spawn)
+    {
+        Instantiate(homingPrefab, spawn, transform.rotation);
+        bulletsound.Play();
+        //should regular bullet not cost light?
+        lightCount -= shootCost; // Subtract the shoot cost from the light total
+        updateLightText(); // Update the UI's text
+        nextFire = 0;
     }
 }
