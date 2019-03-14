@@ -86,7 +86,13 @@ public class PlayerCtrl : MonoBehaviour
 
         // Set initial light properties --Connor--
         lightCount = 100; // Start with 100 units of light
-        lightText.text = "Light: " + lightCount;
+
+        // If there is light text set it
+        if (lightText)
+        {
+            lightText.text = "Light: " + lightCount;
+        }
+        
         shootCost = 2; // Shooting costs 2 light units
 
         // Sets the health bar to full instantly at the start of the level

@@ -22,7 +22,13 @@ public class upgradeCtrl : MonoBehaviour
     void Start()
     {
         uPoints = 2;
-        upgradeTxt.text = "Upgrade Points: " + uPoints;
+
+        // If the upgrade text is not null
+        if (upgradeTxt)
+        {
+            upgradeTxt.text = "Upgrade Points: " + uPoints;
+        }
+        
         levelNumber = PlayerPrefs.GetInt("LevelNumber");
 
     }
