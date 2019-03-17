@@ -19,6 +19,6 @@ public class introStoryCtrl : MonoBehaviour
 
     public void loadTutorial()
     {
-        SceneManager.LoadScene("Tutorial", LoadSceneMode.Single);
+        SceneManager.LoadScene("Tutorial2", LoadSceneMode.Single);
     }
 }
