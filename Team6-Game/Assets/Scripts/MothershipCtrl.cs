@@ -17,8 +17,17 @@ public class MothershipCtrl : MonoBehaviour
         mothershipLight = 0.0f;
         //starts mothership light slider to the far left
         slider.value = 0;
-        //how much light needed to win the first level
-        mothershipGoal = PlayerPrefs.GetInt("MothershipGoal"); 
+
+        // if on the first level hard set the goal
+        if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0)
+        {
+            mothershipGoal = 2500;
+        }
+        else // On otherlevels get the goal from playerPrefs
+        {
+            mothershipGoal = PlayerPrefs.GetInt("MothershipGoal");
+        }
+        
     }
 
     // Update is called once per frame
@@ -34,7 +43,7 @@ public class MothershipCtrl : MonoBehaviour
             Debug.Log("Trying to switch scene");
         }
     }
-    // Added heal mechanic from depositing light to the mothership -- Trevor
+    // Trevor, Added heal mechanic from depositing light to the mothership
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -54,7 +63,10 @@ public class MothershipCtrl : MonoBehaviour
                 other.gameObject.GetComponent<PlayerCtrl>().lightCount = 0;
                 other.gameObject.GetComponent<PlayerCtrl>().updateLightText();
             }
-        }else{
+        }
+        else
+        {
+            // Destroy all other objects that collide with the mothership
             other.gameObject.SetActive(false);
             Debug.Log(other.gameObject);
         }
@@ -62,33 +74,29 @@ public class MothershipCtrl : MonoBehaviour
 
     void SceneSwitch()
     {
-        // Connor Load the second level if on the first one
-        if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0 )
+        // Connor and Trevor, Set up mothership when scene switches
+        if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0)
         {
             // --Trevor-- Sets level number and next mothership Light Goal, to be called after upgrades
             PlayerPrefs.SetInt("LevelNumber", 1);
-            PlayerPrefs.SetInt("MothershipGoal", 4000); // Set light to beat the second level
+            PlayerPrefs.SetInt("MothershipGoal", 3750); // Set light to beat the second level
             PlayerPrefs.Save();
             GoToUpgrades();
         }
         else if (string.Compare(SceneManager.GetActiveScene().name, "Level2Demo") == 0)
         {
             PlayerPrefs.SetInt("LevelNumber", 2);
-            PlayerPrefs.SetInt("MothershipGoal", 6000);
+            PlayerPrefs.SetInt("MothershipGoal", 5000);
             PlayerPrefs.Save();
             GoToUpgrades();
         }
-        //else if (string.Compare(SceneManager.GetActiveScene().name, " -- Put Level 3 name here -- ") == 0)
-        //{
-        //    PlayerPrefs.SetInt("LevelNumber", 3);
-        //    PlayerPrefs.SetInt("MothershipGoal", 8000);
-        //    GoToUpgrades();
-        //}
-        // .
-        // .
-        // .
+        else if (string.Compare(SceneManager.GetActiveScene().name, "BonusLevel") == 0)
+        {
+            SceneManager.LoadScene("LevelVictory", LoadSceneMode.Single);
+        }
     }
 
+    // Trevor, Go to the upgrade ship scene
     void GoToUpgrades()
     {
         SceneManager.LoadScene("LevelUpgradeShip", LoadSceneMode.Single);

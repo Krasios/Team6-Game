@@ -59,7 +59,7 @@ public class PlayerCtrl : MonoBehaviour
     //private float laserTimer;
     private bool isSuper;
     private float superTimer;
-    private float nextLeftFire, nextRightFire; // Connor
+    private float nextLeftFire, nextRightFire, nextSpecialFire; // Connor
     private float nextCharge;
     private float nextSpread;
     private float spread;
@@ -78,13 +78,29 @@ public class PlayerCtrl : MonoBehaviour
     private float bulletStrength;
     private float fireRateStrength;
 
+
     private void Awake()
     {
-        // On first spawn
-        PlayerPrefs.SetFloat("FireRateStrength", 1);
-        PlayerPrefs.SetFloat("BulletStrength", 1);
+        //Connor, On player spawn in level 1 or tutorial level
+        if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0 || string.Compare(SceneManager.GetActiveScene().name, "Tutorial") == 0)
+        {
+            PlayerPrefs.SetFloat("FireRateStrength", 1f);
+            PlayerPrefs.SetFloat("BulletStrength", 1f);
 
-        PlayerPrefs.Save();
+            // Setup starting guns
+            PlayerPrefs.SetInt("PrimaryGun", 0);
+            PlayerPrefs.SetInt("SpecialGun", 0);
+
+            PlayerPrefs.Save();
+        }
+        // Need this rn or fire rate doesnt work on  levels past tutorial and 1
+        else
+        {
+            PlayerPrefs.SetFloat("FireRateStrength", 1f);
+            PlayerPrefs.SetFloat("BulletStrength", 1f);
+            PlayerPrefs.Save();
+        }
+        
     }
 
     void Start() {
@@ -116,6 +132,7 @@ public class PlayerCtrl : MonoBehaviour
         nextSpread = 0;
         nextLeftFire = fireRate;
         nextRightFire = fireRate;
+        nextSpecialFire = fireRate;
         isCharging = false;
         //isLaser = false;
         //laserTimer = 0;
@@ -171,8 +188,13 @@ public class PlayerCtrl : MonoBehaviour
             faceMouse(); // Connor
         }
 
-        // Connor, Set the intensity of the player's light based on their resource count
-        lightComp.intensity = ((lightCount + 300) / 1000) * 2;
+        // Connor, Set the intensity of the player's light based on their resource count,
+        lightComp.intensity = ((lightCount + 900) / 1000) * 2;
+        if (lightComp.intensity > ((4000 + 900) / 1000) * 2)
+        {
+            // Cap how bright the light can get
+            lightComp.intensity = ((4000 + 900) / 1000) * 2;
+        }
 
     }
 
@@ -200,7 +222,7 @@ public class PlayerCtrl : MonoBehaviour
         if ((Mathf.Abs(moveHorizontal) <= 0.05 && Mathf.Abs(moveHorizontal) >= 0)
             && (Mathf.Abs(moveVertical) <= 0.05 && Mathf.Abs(moveVertical) >= 0))
         {
-            rigidB.AddForce(-rigidB.velocity * 0.2f); // slow down the ship
+            rigidB.AddForce(-rigidB.velocity * 0.4f); // slow down the ship
         }
 
         // Add force to the player
@@ -218,6 +240,7 @@ public class PlayerCtrl : MonoBehaviour
         // Advance weapon cooldown timers
         nextLeftFire += Time.deltaTime;
         nextRightFire += Time.deltaTime;
+        nextSpecialFire += ( Time.deltaTime / 2f ); //Charge slower than regular weapons
 
         Vector3 spawn = transform.position - transform.up * 5; //spawn bullet at tip of gun
 
@@ -252,12 +275,12 @@ public class PlayerCtrl : MonoBehaviour
                             nextLeftFire = 0; // Reset left gun cooldown timer
                         }
                         break;
-                    // Shotgun
+                    // Homing Gun
                     case 2:
                         Debug.Log("Player fired p_homingshot");
                         if (nextLeftFire > fireRateStrength)
                         {
-                            RapidFire(spawn);
+                            RegularFire(spawn);
                             nextLeftFire = 0; // Reset left gun cooldown timer
                         }
                         break;
@@ -291,12 +314,12 @@ public class PlayerCtrl : MonoBehaviour
                             nextRightFire = 0; // Reset left gun cooldown timer
                         }
                         break;
-                    // Shotgun
+                    // Homing Gun
                     case 2:
                         Debug.Log("Player fired p_homingshot");
                         if (nextRightFire > fireRateStrength)
                         {
-                            RapidFire(spawn);
+                            RegularFire(spawn);
                             nextRightFire = 0; // Reset left gun cooldown timer
                         }
                         break;
@@ -315,22 +338,26 @@ public class PlayerCtrl : MonoBehaviour
                     // Machine Gun
                     case 1:
                         Debug.Log("Fire machine gun");
-                        if (nextLeftFire > (fireRateStrength / 3f ) )
+                        if (nextSpecialFire > (fireRateStrength / 12f ))
                         {
                             RapidFire(spawn);
+                            nextSpecialFire = 0;
                         }
+
                         break;
                     // Machine Gun
                     case 2:
                         Debug.Log("Fire Charge gun");
 
-                        // Only fire if the gun has cooled down
-                        //if (nextCharge > fireRateStrength)
-                        //    ExplosiveFire(spawn);
-                        ExplosiveFire(spawn);
+                        if (nextSpecialFire > (fireRateStrength + 0.2f))
+                        {
+                            ExplosiveFire(spawn);
+                            nextSpecialFire = 0;
+                        }
+                        
                         break;
                 }
-                nextLeftFire = 0;
+                
             }
         }
 
@@ -401,7 +428,7 @@ public class PlayerCtrl : MonoBehaviour
 
 
         //-- Change the particle birth rate based on player's light -- Connor
-        float spawnRate = lightCount / 2;
+        float spawnRate = lightCount / 4f;
         if (spawnRate > maxParticleSpawnRate)
         {
             spawnRate = maxParticleSpawnRate;
@@ -440,7 +467,7 @@ public class PlayerCtrl : MonoBehaviour
 
     public void equipShotgun()
     {
-        PlayerPrefs.GetInt("PrimaryGun", 1);       // Note: cHange these to gun selection in the equip screen
+        PlayerPrefs.SetInt("PrimaryGun", 1);       // Note: cHange these to gun selection in the equip screen
         PlayerPrefs.Save();
     }
 
@@ -471,7 +498,7 @@ public class PlayerCtrl : MonoBehaviour
 
     public void equipHominggun()
     {
-        PlayerPrefs.GetInt("PrimaryGun", 2);
+        PlayerPrefs.SetInt("PrimaryGun", 2);
         PlayerPrefs.Save();
     }
 
@@ -502,7 +529,7 @@ public class PlayerCtrl : MonoBehaviour
 
     public void equipMachinegun()
     {
-        PlayerPrefs.GetInt("SpecialGun", 1);
+        PlayerPrefs.SetInt("SpecialGun", 1);
         PlayerPrefs.Save();
     }
 
@@ -532,7 +559,7 @@ public class PlayerCtrl : MonoBehaviour
 
     public void equipChargegun()
     {
-        PlayerPrefs.GetInt("SpecialGun", 2);
+        PlayerPrefs.SetInt("SpecialGun", 2);
         PlayerPrefs.Save();
     }
 
@@ -564,7 +591,7 @@ public class PlayerCtrl : MonoBehaviour
     // No implementation yet
     public void equipLazer()
     { 
-        PlayerPrefs.GetInt("SpecialGun", 3);
+        PlayerPrefs.SetInt("SpecialGun", 3);
         PlayerPrefs.Save();
     }
 
@@ -598,13 +625,13 @@ public class PlayerCtrl : MonoBehaviour
         switch (fireRateStrength)
         {
             case 1:
-                PlayerPrefs.SetFloat("FireRateStrength", 2);
+                PlayerPrefs.SetFloat("FireRateStrength", 0.8f);
                 break;
             case 2:
-                PlayerPrefs.SetFloat("FireRateStrength", 3);
+                PlayerPrefs.SetFloat("FireRateStrength", 0.6f);
                 break;
             case 3:
-                PlayerPrefs.SetFloat("FireRateStrength", 4);
+                PlayerPrefs.SetFloat("FireRateStrength", 0.4f);
                 break;
             case 4:
                 Debug.Log("Cant Upgrade this any more");
@@ -683,7 +710,7 @@ public class PlayerCtrl : MonoBehaviour
         bulletsound.Play();
         //should regular bullet not cost light?
         //lightCount -= specialCost; // Subtract the shoot cost from the light total
-        updateLightText(); // Update the UI's text
+        // updateLightText(); // Update the UI's text
         
     }
     // Machine Gun, Duy and Connor
@@ -702,7 +729,7 @@ public class PlayerCtrl : MonoBehaviour
         }
         
         updateLightText(); // Update the UI's text
-        nextLeftFire = 0;
+        // nextLeftFire = 0;
     }
     // Shotgun, Duy and Connor
     void SpreadFire(Vector3 spawn)
@@ -721,12 +748,14 @@ public class PlayerCtrl : MonoBehaviour
     void ExplosiveFire(Vector3 spawn) //scale bullet up, in bullet code: if above size 15, explode
     {
         GameObject bullet = Instantiate(bulletPrefab, spawn, transform.rotation);
-        bullet.gameObject.transform.localScale += bullet.gameObject.transform.localScale;
+        bullet.gameObject.transform.localScale += 1.5f * bullet.gameObject.transform.localScale;
         bulletsound.Play();
         //lightCount -= explosiveCost; // Subtract the shoot cost from the light total
-        updateLightText(); // Update the UI's text
-        nextCharge = 0;
+        //updateLightText(); // Update the UI's text
+        //nextCharge = 0;
     }
+
+    // Inactive
     void SuperFire(Vector3 spawn) //like spread, but active per frame
     {
         if (enableSpray == true)
