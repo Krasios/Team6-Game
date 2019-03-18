@@ -11,6 +11,9 @@ public class PlayerCtrl : MonoBehaviour
     public GameObject bulletPrefab;
     private Camera camera;
 
+    // Haungs Mode 
+    private int haungsMode; // PlayerPrefs 0 for off, 1 for on
+
     //public Light playerLight;
     private Rigidbody2D rigidB;
 
@@ -108,6 +111,9 @@ public class PlayerCtrl : MonoBehaviour
         shipLightParticles = GetComponent<ParticleSystem>();
         lightComp = GetComponent<Light>();
 
+        // Checks for HaungsMode
+        haungsMode = PlayerPrefs.GetInt("HaungsMode");
+
         // Set initial light properties --Connor--
         lightCount = 100; // Start with 100 units of light
 
@@ -171,7 +177,7 @@ public class PlayerCtrl : MonoBehaviour
         }
 
         // Connor, Load the death scene
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && haungsMode == 0)
         {
             SceneManager.LoadScene("LevelDeath", LoadSceneMode.Single);
         }
