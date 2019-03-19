@@ -11,7 +11,7 @@ public class upgradeCtrl : MonoBehaviour
 
     // Shop buttons
     public Button shotgun;
-    public Button homing;
+    //public Button homing;
     public Button machinegun;
     public Button chargegun;
     public Button firerate;
@@ -47,10 +47,10 @@ public class upgradeCtrl : MonoBehaviour
             shotgun.interactable = false;
         }
 
-        if ((homing) != null && PlayerPrefs.GetFloat("HomingStrength") > 0)
-        {
-            homing.interactable = false;
-        }
+        //if ((homing) != null && PlayerPrefs.GetFloat("HomingStrength") > 0)
+        //{
+        //    homing.interactable = false;
+        //}
 
         if ((machinegun) != null && PlayerPrefs.GetFloat("MachineStrength") > 0)
         {
@@ -73,10 +73,10 @@ public class upgradeCtrl : MonoBehaviour
             Eqshotgun.interactable = false;
         }
 
-        if ((Eqhoming) != null && PlayerPrefs.GetFloat("HomingStrength") == 0)
-        {
-            Eqhoming.interactable = false;
-        }
+        //if ((Eqhoming) != null && PlayerPrefs.GetFloat("HomingStrength") == 0)
+        //{
+        //    Eqhoming.interactable = false;
+        //}
 
         if ((Eqmachinegun) != null && PlayerPrefs.GetFloat("MachineStrength") == 0)
         {
@@ -102,7 +102,7 @@ public class upgradeCtrl : MonoBehaviour
         if (uPoints == 0)
         {
             shotgun.interactable = false;
-            homing.interactable = false;
+            //homing.interactable = false;
             machinegun.interactable = false;
             chargegun.interactable = false;
             firerate.interactable = false;

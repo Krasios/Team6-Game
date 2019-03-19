@@ -410,7 +410,8 @@ public class PlayerCtrl : MonoBehaviour
 
     public void equipHominggun()
     {
-        PlayerPrefs.SetInt("PrimaryGun", 2);
+        // Set back to default gun, didn't have time to implement
+        PlayerPrefs.SetInt("PrimaryGun", 0);
         PlayerPrefs.Save();
     }
 
