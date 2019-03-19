@@ -755,6 +755,16 @@ public class PlayerCtrl : MonoBehaviour
         //nextCharge = 0;
     }
 
+    void HomingFire(Vector3 spawn) //scale bullet up, in bullet code: if above size 15, explode
+    {
+        GameObject bullet = Instantiate(bulletPrefab, spawn, transform.rotation);
+        bullet.gameObject.transform.localScale = new Vector3(4f, 4f, bullet.gameObject.transform.localScale.z);
+        bulletsound.Play();
+        //lightCount -= explosiveCost; // Subtract the shoot cost from the light total
+        //updateLightText(); // Update the UI's text
+        //nextCharge = 0;
+    }
+
     // Inactive
     void SuperFire(Vector3 spawn) //like spread, but active per frame
     {

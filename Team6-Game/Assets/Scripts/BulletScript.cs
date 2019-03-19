@@ -9,11 +9,26 @@ public class BulletScript : MonoBehaviour
     private Rigidbody2D rb2d;
     public GameObject pureLightPrefab;
     public GameObject player;
+    public float rotateSpeed = 400f;
 
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        rb2d.velocity = -transform.up * speed;
+    }
+
+    private void FixedUpdate()
+    {
+        if (transform.localScale.x <= 5f)
+        {
+            Transform target = FindClosestEnemy().transform;
+            Vector2 direction = (Vector2)target.position - rb2d.position;
+            direction.Normalize();
+            float rotateAmount = Vector3.Cross(direction, -transform.up).z;
+            rb2d.angularVelocity = -rotateAmount * rotateSpeed;
+        }
+
         rb2d.velocity = -transform.up * speed;
     }
 
@@ -44,3 +59,23 @@ public class BulletScript : MonoBehaviour
         }
     }
 }
+
+    public GameObject FindClosestEnemy()
+    {
+        GameObject[] gos;
+        gos = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        foreach (GameObject go in gos)
+        {
+            Vector3 diff = go.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
+            {
+                closest = go;
+                distance = curDistance;
+            }
+        }
+        return closest;
+    }
