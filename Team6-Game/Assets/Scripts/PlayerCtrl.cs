@@ -63,26 +63,24 @@ public class PlayerCtrl : MonoBehaviour
     private float bulletStrength;
     private float fireRateStrength;
 
+    private float newFireRate;
+    private int fireRateUpgrade;
+
 
     private void Awake()
     {
         //Connor, On player spawn in level 1 or tutorial level
-        if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0 || string.Compare(SceneManager.GetActiveScene().name, "Tutorial") == 0)
+        if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0 || string.Compare(SceneManager.GetActiveScene().name, "Tutorial2") == 0 || string.Compare(SceneManager.GetActiveScene().name, "MainMenu") == 0)
         {
-            PlayerPrefs.SetFloat("FireRateStrength", 1f);
-            PlayerPrefs.SetFloat("BulletStrength", 1f);
+            // Setup default firing rate and reset upgrade
+            newFireRate = 1f;
+            PlayerPrefs.SetFloat("newFireRatePref", 1f);
+            fireRateUpgrade = 0;
 
             // Setup starting guns
             PlayerPrefs.SetInt("PrimaryGun", 0);
             PlayerPrefs.SetInt("SpecialGun", 0);
 
-            PlayerPrefs.Save();
-        }
-        // Need this rn or fire rate doesnt work on  levels past tutorial and 1
-        else
-        {
-            PlayerPrefs.SetFloat("FireRateStrength", 1f);
-            PlayerPrefs.SetFloat("BulletStrength", 1f);
             PlayerPrefs.Save();
         }
         
@@ -131,10 +129,11 @@ public class PlayerCtrl : MonoBehaviour
         machineStrength = PlayerPrefs.GetFloat("MachineStrength");
         chargeStrength = PlayerPrefs.GetFloat("ChargeStrength");
         lazerStrength = PlayerPrefs.GetFloat("LazerStrength");
-        bulletStrength = PlayerPrefs.GetFloat("BulletStrength");
-        fireRateStrength = PlayerPrefs.GetFloat("FireRateStrength");
+        // bulletStrength = PlayerPrefs.GetFloat("BulletStrength");
+        fireRateStrength = PlayerPrefs.GetFloat("FireRateStrength"); // this variable is acting crazy
+        newFireRate = 1f;
         Debug.Log(shotgunStrength.ToString() + homingStrength.ToString() + machineStrength.ToString()
-        + chargeStrength.ToString() + lazerStrength.ToString() + bulletStrength.ToString() + fireRateStrength.ToString());
+        + chargeStrength.ToString() + lazerStrength.ToString() + fireRateStrength.ToString());
 
     }
 
@@ -237,7 +236,7 @@ public class PlayerCtrl : MonoBehaviour
                     case 0:
                         Debug.Log("Player fired p_singleshot");
                         // Wait for cooldown to finish before firing
-                        if (nextLeftFire > fireRateStrength)
+                        if (nextLeftFire > PlayerPrefs.GetFloat("newFireRatePref"))
                         {
                             RegularFire(spawn);
                             nextLeftFire = 0; // Reset left gun cooldown timer
@@ -247,7 +246,7 @@ public class PlayerCtrl : MonoBehaviour
                     case 1:
                         Debug.Log("Player fired p_shotgunshot");
                         // Wait for cooldown to finish before firing
-                        if (nextLeftFire > (fireRateStrength) )
+                        if (nextLeftFire > (PlayerPrefs.GetFloat("newFireRatePref")) )
                         {
                             SpreadFire(spawn);
                             nextLeftFire = 0; // Reset left gun cooldown timer
@@ -256,7 +255,7 @@ public class PlayerCtrl : MonoBehaviour
                     // Homing Gun
                     case 2:
                         Debug.Log("Player fired p_homingshot");
-                        if (nextLeftFire > fireRateStrength)
+                        if (nextLeftFire > PlayerPrefs.GetFloat("newFireRatePref"))
                         {
                             RegularFire(spawn);
                             nextLeftFire = 0; // Reset left gun cooldown timer
@@ -276,7 +275,7 @@ public class PlayerCtrl : MonoBehaviour
                     case 0:
                         Debug.Log("Player fired p_singleshot");
                         // Wait for cooldown to finish before firing
-                        if (nextRightFire > fireRateStrength)
+                        if (nextRightFire > PlayerPrefs.GetFloat("newFireRatePref"))
                         {
                             RegularFire(spawn);
                             nextRightFire = 0; // Reset left gun cooldown timer
@@ -286,7 +285,7 @@ public class PlayerCtrl : MonoBehaviour
                     case 1:
                         Debug.Log("Player fired p_shotgunshot");
                         // Wait for cooldown to finish before firing
-                        if (nextRightFire > (fireRateStrength))
+                        if (nextRightFire > (PlayerPrefs.GetFloat("newFireRatePref")))
                         {
                             SpreadFire(spawn);
                             nextRightFire = 0; // Reset left gun cooldown timer
@@ -295,7 +294,7 @@ public class PlayerCtrl : MonoBehaviour
                     // Homing Gun
                     case 2:
                         Debug.Log("Player fired p_homingshot");
-                        if (nextRightFire > fireRateStrength)
+                        if (nextRightFire > PlayerPrefs.GetFloat("newFireRatePref"))
                         {
                             RegularFire(spawn);
                             nextRightFire = 0; // Reset left gun cooldown timer
@@ -316,7 +315,7 @@ public class PlayerCtrl : MonoBehaviour
                     // Machine Gun
                     case 1:
                         Debug.Log("Fire machine gun");
-                        if (nextSpecialFire > (fireRateStrength / 12f ))
+                        if (nextSpecialFire > (PlayerPrefs.GetFloat("newFireRatePref") / 12f ))
                         {
                             RapidFire(spawn);
                             nextSpecialFire = 0;
@@ -327,7 +326,7 @@ public class PlayerCtrl : MonoBehaviour
                     case 2:
                         Debug.Log("Fire Charge gun");
 
-                        if (nextSpecialFire > (fireRateStrength + 0.2f))
+                        if (nextSpecialFire > (PlayerPrefs.GetFloat("newFireRatePref") + 0.2f))
                         {
                             ExplosiveFire(spawn);
                             nextSpecialFire = 0;
@@ -510,41 +509,42 @@ public class PlayerCtrl : MonoBehaviour
 
     public void buyUpgradeBullets()
     { 
-        switch (bulletStrength)
-        {
-            case 1:
-                PlayerPrefs.SetFloat("BulletStrength", 2);
-                break;
-            case 2:
-                PlayerPrefs.SetFloat("BulletStrength", 3);
-                break;
-            case 3:
-                PlayerPrefs.SetFloat("BulletStrength", 4);
-                break;
-            case 4:
-                Debug.Log("Cant Upgrade this any more");
-                break;
-            default:
-                Debug.Log("Something went wrong upgrading the bulletStrengh upgrade");
-                break;
-        }
-        PlayerPrefs.Save();
-        Debug.Log("Bought an Upgrade for Bullets");
+        //switch (bulletStrength)
+        //{
+        //    case 1:
+        //        PlayerPrefs.SetFloat("BulletStrength", 2);
+        //        break;
+        //    case 2:
+        //        PlayerPrefs.SetFloat("BulletStrength", 3);
+        //        break;
+        //    case 3:
+        //        PlayerPrefs.SetFloat("BulletStrength", 4);
+        //        break;
+        //    case 4:
+        //        Debug.Log("Cant Upgrade this any more");
+        //        break;
+        //    default:
+        //        Debug.Log("Something went wrong upgrading the bulletStrengh upgrade");
+        //        break;
+        //}
+        //PlayerPrefs.Save();
+        //Debug.Log("Bought an Upgrade for Bullets");
 
     }
 
     public void buyUpgradeFireRate()
-    { 
-        switch (fireRateStrength)
+    {
+        fireRateUpgrade += 1; // Go to the next case
+        switch (fireRateUpgrade) // Cant switch using this or there will be issues
         {
             case 1:
-                PlayerPrefs.SetFloat("FireRateStrength", 0.8f);
+                PlayerPrefs.SetFloat("newFireRatePref", 0.7f);
                 break;
             case 2:
-                PlayerPrefs.SetFloat("FireRateStrength", 0.6f);
+                PlayerPrefs.SetFloat("newFireRatePref", 0.5f);
                 break;
             case 3:
-                PlayerPrefs.SetFloat("FireRateStrength", 0.4f);
+                PlayerPrefs.SetFloat("newFireRatePref", 0.2f);
                 break;
             case 4:
                 Debug.Log("Cant Upgrade this any more");

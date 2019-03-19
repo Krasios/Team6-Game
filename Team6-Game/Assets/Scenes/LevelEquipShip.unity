@@ -2005,6 +2005,10 @@ MonoBehaviour:
   machinegun: {fileID: 0}
   chargegun: {fileID: 0}
   firerate: {fileID: 0}
+  Eqshotgun: {fileID: 94996278}
+  Eqhoming: {fileID: 939660742}
+  Eqmachinegun: {fileID: 1332125029}
+  Eqchargegun: {fileID: 380700559}
 --- !u!4 &2142394497
 Transform:
   m_ObjectHideFlags: 0

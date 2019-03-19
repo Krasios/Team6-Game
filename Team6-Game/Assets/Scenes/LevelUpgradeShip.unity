@@ -146,8 +146,11 @@ MonoBehaviour:
   homing: {fileID: 1948067148}
   machinegun: {fileID: 883304912}
   chargegun: {fileID: 920589276}
-  bulletdmg: {fileID: 0}
   firerate: {fileID: 548863693}
+  Eqshotgun: {fileID: 0}
+  Eqhoming: {fileID: 0}
+  Eqmachinegun: {fileID: 0}
+  Eqchargegun: {fileID: 0}
 --- !u!4 &91180972
 Transform:
   m_ObjectHideFlags: 0
@@ -2131,7 +2134,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Upgrade Points:'
+  m_Text: 'Shop Points:'
 --- !u!222 &1938260824
 CanvasRenderer:
   m_ObjectHideFlags: 0

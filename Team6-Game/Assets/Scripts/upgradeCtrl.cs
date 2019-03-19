@@ -9,11 +9,16 @@ public class upgradeCtrl : MonoBehaviour
     // Connor and Trevor for all code here
     public Text upgradeTxt;
 
+    // Shop buttons
     public Button shotgun;
     public Button homing;
     public Button machinegun;
     public Button chargegun;
     public Button firerate;
+
+    // Equip buttons
+    public Button Eqshotgun, Eqhoming, Eqmachinegun, Eqchargegun;
+
     private int levelNumber; // PlayerPrefs
 
     int uPoints;
@@ -26,17 +31,62 @@ public class upgradeCtrl : MonoBehaviour
         // If the upgrade text is not null
         if (upgradeTxt)
         {
-            upgradeTxt.text = "Upgrade Points: " + uPoints;
+            upgradeTxt.text = "Shop Points: " + uPoints;
         }
         
         levelNumber = PlayerPrefs.GetInt("LevelNumber");
 
     }
 
-    // Update is called once per frame
+    // Connor
     void Update()
     {
-        
+        // Shop scene, stop players from buying gear they already have
+        if ((shotgun) != null && PlayerPrefs.GetFloat("ShotgunStrength") > 0)
+        {
+            shotgun.interactable = false;
+        }
+
+        if ((homing) != null && PlayerPrefs.GetFloat("HomingStrength") > 0)
+        {
+            homing.interactable = false;
+        }
+
+        if ((machinegun) != null && PlayerPrefs.GetFloat("MachineStrength") > 0)
+        {
+            machinegun.interactable = false;
+        }
+
+        if ((chargegun) != null && PlayerPrefs.GetFloat("ChargeStrength") > 0)
+        {
+            chargegun.interactable = false;
+        }
+
+        if ((firerate) != null && (PlayerPrefs.GetFloat("newFireRatePref") <= 0.2f))
+        {
+            firerate.interactable = false;
+        }
+
+        // Equip Scene, Check if the gun hasnt been bought and set it to unclickable
+        if ((Eqshotgun) != null && PlayerPrefs.GetFloat("ShotgunStrength") == 0)
+        {
+            Eqshotgun.interactable = false;
+        }
+
+        if ((Eqhoming) != null && PlayerPrefs.GetFloat("HomingStrength") == 0)
+        {
+            Eqhoming.interactable = false;
+        }
+
+        if ((Eqmachinegun) != null && PlayerPrefs.GetFloat("MachineStrength") == 0)
+        {
+            Eqmachinegun.interactable = false;
+        }
+
+        if ((Eqchargegun) != null && PlayerPrefs.GetFloat("ChargeStrength") == 0)
+        {
+            Eqchargegun.interactable = false;
+        }
     }
 
     // Connor, Let the player spend upgrade points and disable buttons when out of upoints
@@ -45,7 +95,7 @@ public class upgradeCtrl : MonoBehaviour
         if (uPoints > 0)
         {
             uPoints -= 1;
-            upgradeTxt.text = "Upgrade Points: " + uPoints;
+            upgradeTxt.text = "Shop Points: " + uPoints;
         }
 
         // If player has 0 points disable all upgrade buttons

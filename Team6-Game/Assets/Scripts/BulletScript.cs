@@ -34,7 +34,7 @@ public class BulletScript : MonoBehaviour
                 {
                     // 
                     GameObject bullet = Instantiate(this.gameObject, transform.position, transform.rotation);
-                    bullet.transform.localScale = new Vector3(bullet.transform.localScale.x - 3f , bullet.transform.localScale.y - 3f, bullet.transform.localScale.z);
+                    bullet.transform.localScale = new Vector3(bullet.transform.localScale.x - 5f , bullet.transform.localScale.y - 5f, bullet.transform.localScale.z);
                     bullet.GetComponent<Rigidbody2D>().rotation += a * (360 / 8);
                 }
             }

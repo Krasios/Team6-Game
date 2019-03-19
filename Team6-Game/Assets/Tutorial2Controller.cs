@@ -37,7 +37,7 @@ public class Tutorial2Controller : MonoBehaviour
         StageCheck();
 
         distanceBetween = (mothership.transform.position - player.transform.position).magnitude;
-        Debug.Log(distanceBetween);
+        //Debug.Log(distanceBetween);
         if (distanceBetween <= 1000)
         {
             state = 5;
