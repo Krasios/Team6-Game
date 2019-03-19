@@ -72,9 +72,9 @@ public class MothershipCtrl : MonoBehaviour
         }
     }
 
+    // Connor and Trevor, Set up mothership when scene switches
     void SceneSwitch()
     {
-        // Connor and Trevor, Set up mothership when scene switches
         if (string.Compare(SceneManager.GetActiveScene().name, "RopeTest") == 0)
         {
             // --Trevor-- Sets level number and next mothership Light Goal, to be called after upgrades

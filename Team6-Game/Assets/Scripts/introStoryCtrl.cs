@@ -17,6 +17,7 @@ public class introStoryCtrl : MonoBehaviour
         
     }
 
+    // Connor
     public void loadTutorial()
     {
         SceneManager.LoadScene("Tutorial2", LoadSceneMode.Single);

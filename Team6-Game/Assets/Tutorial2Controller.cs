@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-// New tutorial based on feeback --Trevor--
+// New tutorial based on feeback --Mostly Trevor and a little bit from Connor--
 public class Tutorial2Controller : MonoBehaviour
 {
     public Text tutorial;
@@ -75,7 +75,8 @@ public class Tutorial2Controller : MonoBehaviour
                 player.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
                 player.GetComponent<PlayerCtrl>().joystick = true;
                 player.GetComponent<PlayerCtrl>().canShoot = true;
-                tutorial.text = "Your ship will point towards your mouse cursor. Click the left mouse button to fire at those asteroids.";
+                // Connor Tweaked this
+                tutorial.text = "Your ship will point towards your mouse cursor. Click the left mouse button to fire your left gun and the right mouse button for your right gun.";
                 StartCoroutine(BaseTimerOne());
                 completedStage = false;
                 break;
@@ -103,6 +104,12 @@ public class Tutorial2Controller : MonoBehaviour
 
 
         }
+    }
+
+    //Connor, skip tutorial and load 1st level
+    public void SkipTutorial()
+    {
+        SceneManager.LoadScene("RopeTest", LoadSceneMode.Single);
     }
 
     void StageCheck()

@@ -40,36 +40,18 @@ public class PlayerCtrl : MonoBehaviour
     public float maxHealth = 100;
     public float maxLight = 1000;
 
-    // Bullet var - Duy
-    //ways to shoot: press regular bullet, hold charged shotgun for right trigger.
-    //hold alternate fire for rapid fire stream, double tap for big bullet spreading bomb 
-    //tap both fire buttons for stream of bullets in shotgun spread (laser substitute)
-    //recommendation for playtesting: ask players to try each separate button's control scheme.
+    // Shooting Vars, Connor and Duy
     public float fireRate; //regular bullet
-    public float chargeRate; //charged exploding bullet
-    //public float laserRate;
-    //public float laserLength;
-    // public float rapidRate;
-    public float superRate;
-    public float superLength;
     public int spreadNum; // num of initial sprays
     public float spreadRate; //time it takes to spread
     public float spreadAngle; //10 default?
     public bool enableSpray;
-    private bool isFirstShot;
-    private bool isCharging;
-    //private bool isLaser;
-    //private float laserTimer;
-    private bool isSuper;
-    private float superTimer;
     private float nextLeftFire, nextRightFire, nextSpecialFire; // Connor
-    private float nextCharge;
-    private float nextSpread;
     private float spread;
-    public int explosiveCost;
     private AudioSource bulletsound;
     public bool canShoot; // Connor
 
+    // Connor and Trevor, Variables relating to ship weapons
     private int primaryGun; // playerPref key-value --Trevor
     private int specialGun; // ''                ''
 
@@ -134,17 +116,9 @@ public class PlayerCtrl : MonoBehaviour
 
         // Duy and Connor, Shooting Stuff 
         bulletsound = GetComponent<AudioSource>();
-        nextCharge = 0;
-        nextSpread = 0;
         nextLeftFire = fireRate;
         nextRightFire = fireRate;
         nextSpecialFire = fireRate;
-        isCharging = false;
-        //isLaser = false;
-        //laserTimer = 0;
-        isSuper = false;
-        isFirstShot = true;
-        superTimer = 0;
 
         // Pulls current values for which gun number is equipped weapons --Trevor
         primaryGun = PlayerPrefs.GetInt("PrimaryGun");
@@ -189,9 +163,9 @@ public class PlayerCtrl : MonoBehaviour
         {
             UpdatePlayerRotStick();
         }
-        else // Make the player face the mouse when using mouse and keyboard
+        else //Connor, Make the player face the mouse when using mouse and keyboard
         {
-            faceMouse(); // Connor
+            faceMouse();
         }
 
         // Connor, Set the intensity of the player's light based on their resource count,
@@ -205,6 +179,8 @@ public class PlayerCtrl : MonoBehaviour
     }
 
     void FixedUpdate() {
+
+        // Connor, Sharon and Trevor
         if (joystick)
         {
             moveHorizontal = Input.GetAxis("Joystick-Horizontal-" + name);
@@ -215,16 +191,12 @@ public class PlayerCtrl : MonoBehaviour
         {
             moveHorizontal = Input.GetAxis("Keyboard-Horizontal-" + name);
             moveVertical = Input.GetAxis("Keyboard-Vertical-" + name);
-
-            // Unused now
-            //xRot = Input.GetAxis("keyboardXrotion-" + name);
-            //yRot = Input.GetAxis("keyboardYrotion-" + name);
             
         }
         
 
         
-        // Decelerate the ship when left stick has no movement
+        //Connor, Decelerate the ship when left stick has no movement
         if ((Mathf.Abs(moveHorizontal) <= 0.05 && Mathf.Abs(moveHorizontal) >= 0)
             && (Mathf.Abs(moveVertical) <= 0.05 && Mathf.Abs(moveVertical) >= 0))
         {
@@ -236,13 +208,13 @@ public class PlayerCtrl : MonoBehaviour
 
         // Check to see if the player is moving too fast
         float maxVel = 50.0f;
-        // Cap the max velocity
+        // Trevor Cap the max velocity
         if (Mathf.Abs(rigidB.velocity.magnitude) > maxVel)
         {
             rigidB.AddForce(-rigidB.velocity * 1.0f); // Cancel out any new velocity
         }
 
-
+        // Connor
         // Advance weapon cooldown timers
         nextLeftFire += Time.deltaTime;
         nextRightFire += Time.deltaTime;
@@ -250,8 +222,8 @@ public class PlayerCtrl : MonoBehaviour
 
         Vector3 spawn = transform.position - transform.up * 5; //spawn bullet at tip of gun
 
-        //----- Shooting 
-        // Connor, check to see which gun is selected and call the right function to fire it
+        //----- Shooting Connor and Duy
+        // check to see which gun is selected and call the right function to fire it
         if (canShoot == true) // If the player can shoot
         {
             // Left Primary Gun, Check the left mouse button was clicked
@@ -366,71 +338,6 @@ public class PlayerCtrl : MonoBehaviour
                 
             }
         }
-
-
-        // if shooting is enabled
-        //if (canShoot == true)
-        //{
-
-        //    if (superTimer < superLength && isSuper == true)
-        //    { //super state, can't shoot anything else
-        //        isCharging = false;
-        //        superTimer += Time.deltaTime;
-        //        SuperFire(spawn);
-        //    }
-        //    else if (Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0))
-        //    // If press button and have more than 0 light
-        //    {
-        //        isSuper = false;
-        //        nextSpread = 0;
-        //        isFirstShot = true;
-        //        if (nextLeftFire > fireRate && isCharging == false) //only fire once when hold
-        //            RegularFire(spawn);
-        //        nextCharge += Time.deltaTime;
-        //        isCharging = true;
-        //    }
-        //    else if (Input.GetButtonUp("Jump-" + name) || Input.GetButtonUp("Fire-" + name) || Input.GetMouseButtonUp(0))
-        //    { //if let go of button
-        //        isCharging = false;
-        //        if (nextCharge > chargeRate && chargeRate != 0)
-        //        {
-        //            ExplosiveFire(spawn);
-        //        }
-        //    }
-        //    else if (Input.GetMouseButton(1)) // Right mouse button
-        //    {
-        //        nextSpread += Time.deltaTime;
-        //        if (nextSpread > spreadRate)
-        //        {
-        //            if (isFirstShot)
-        //            {
-        //                SpreadFire(spawn);
-        //                isFirstShot = false;
-        //            }
-        //            if (nextLeftFire > rapidRate)
-        //            {
-        //                RapidFire(spawn);
-        //            }
-        //        }
-        //    }
-        //    else if ((Input.GetButton("Jump-" + name) || Input.GetButton("Fire-" + name) || Input.GetMouseButton(0)) && Input.GetMouseButton(1))
-        //    {//press both fire buttons
-        //        if (lightCount == maxLight)
-        //        {
-        //            superTimer = 0;
-        //            isSuper = true;
-        //            nextCharge = 0;
-        //            bulletsound.Play(); //to be replaced with super blast sound
-        //        }
-        //    }
-        //    else
-        //    {
-        //        isSuper = false;
-        //        isCharging = false;
-        //        nextSpread = 0;
-        //        isFirstShot = true;
-        //    }
-        //}
 
 
         //-- Change the particle birth rate based on player's light -- Connor
@@ -756,12 +663,9 @@ public class PlayerCtrl : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, spawn, transform.rotation);
         bullet.gameObject.transform.localScale += 1.5f * bullet.gameObject.transform.localScale;
         bulletsound.Play();
-        //lightCount -= explosiveCost; // Subtract the shoot cost from the light total
-        //updateLightText(); // Update the UI's text
-        //nextCharge = 0;
     }
 
-    // Inactive
+    // Duy, Inactive
     void SuperFire(Vector3 spawn) //like spread, but active per frame
     {
         if (enableSpray == true)
@@ -784,6 +688,6 @@ public class PlayerCtrl : MonoBehaviour
         }
         //lightCount -= maxLight;
         updateLightText(); // Update the UI's text
-        nextCharge = 0;
+        //nextCharge = 0;
     }
 }

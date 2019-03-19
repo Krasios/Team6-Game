@@ -6,13 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class upgradeCtrl : MonoBehaviour
 {
+    // Connor and Trevor for all code here
     public Text upgradeTxt;
 
     public Button shotgun;
     public Button homing;
     public Button machinegun;
     public Button chargegun;
-    public Button bulletdmg;
     public Button firerate;
     private int levelNumber; // PlayerPrefs
 
@@ -55,7 +55,6 @@ public class upgradeCtrl : MonoBehaviour
             homing.interactable = false;
             machinegun.interactable = false;
             chargegun.interactable = false;
-            bulletdmg.interactable = false;
             firerate.interactable = false;
         }
     }
